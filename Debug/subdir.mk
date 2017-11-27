@@ -4,7 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../AIplayer.cpp \
+../AIPlayer.cpp \
 ../Board.cpp \
 ../ConsoleDisplayer.cpp \
 ../Displayer.cpp \
@@ -14,7 +14,7 @@ CPP_SRCS += \
 ../ReversieGame.cpp 
 
 OBJS += \
-./AIplayer.o \
+./AIPlayer.o \
 ./Board.o \
 ./ConsoleDisplayer.o \
 ./Displayer.o \
@@ -24,7 +24,7 @@ OBJS += \
 ./ReversieGame.o 
 
 CPP_DEPS += \
-./AIplayer.d \
+./AIPlayer.d \
 ./Board.d \
 ./ConsoleDisplayer.d \
 ./Displayer.d \

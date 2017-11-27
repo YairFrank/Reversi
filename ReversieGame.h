@@ -10,7 +10,7 @@
 #include "Board.h"
 #include "GameLogic.h"
 #include "Shortcuts.h"
-#include "AIplayer.h"
+#include "AIPlayer.h"
 
 class ReversieGame {
 public:

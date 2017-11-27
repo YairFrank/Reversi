@@ -2,17 +2,17 @@
 // Created by yair on 27/11/17.
 //
 
-#include "AIplayer.h"
+#include "AIPlayer.h"
 #include "Shortcuts.h"
 #include <iostream>
 
 using namespace std;
 
-AIplayer::AIplayer(): Player (){}
+AIPlayer::AIPlayer(): Player (){}
 
-AIplayer::AIplayer(char x): Player (x){}
+AIPlayer::AIPlayer(char x): Player (x){}
 
-void AIplayer::playTurn(Shortcuts::coordinate &coord) {
+void AIPlayer::playTurn(Shortcuts::coordinate &coord) {
     int x,y;
     char c;
 
