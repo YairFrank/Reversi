@@ -9,16 +9,16 @@
 #include "Board.h"
 #include <vector>
 #include "ReversieGame.h"
+#include "Menu.h"
 #include <iostream>
 
 
 using namespace std;
 
 int main() {
-	ReversieGame g;
-	g.play();
 
-
+	Menu m;
+	m.play();
 
 	return 0;
 }

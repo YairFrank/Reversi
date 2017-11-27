@@ -1,5 +1,5 @@
 Main.o: ../Main.cpp ../Board.h ../Displayer.h ../ConsoleDisplayer.h \
- ../GameLogic.h ../Player.h ../Shortcuts.h ../ReversieGame.h
+ ../GameLogic.h ../HumanPlayer.h ../Shortcuts.h ../ReversieGame.h
 
 ../Board.h:
 
@@ -9,7 +9,7 @@ Main.o: ../Main.cpp ../Board.h ../Displayer.h ../ConsoleDisplayer.h \
 
 ../GameLogic.h:
 
-../Player.h:
+../HumanPlayer.h:
 
 ../Shortcuts.h:
 

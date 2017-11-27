@@ -1,5 +1,5 @@
-Player.o: ../Player.cpp ../Player.h ../Shortcuts.h
+HumanPlayer.o: ../HumanPlayer.cpp ../HumanPlayer.h ../Shortcuts.h
 
-../Player.h:
+../HumanPlayer.h:
 
 ../Shortcuts.h:
