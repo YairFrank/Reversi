@@ -10,9 +10,7 @@ using namespace std;
 Player::Player(): sign('X'), hasMoves(true) {
 }
 
-Player::Player(char x) {
-    sign = x;
-    hasMoves = true;
+Player::Player(char x):sign(x), hasMoves(true) {
 }
 
 void Player::setHasMoves(bool x) {

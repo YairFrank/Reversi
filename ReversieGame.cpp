@@ -63,25 +63,20 @@ void ReversieGame::play() {
 		}
 
 			b.print();
-			cout << current->getSign() << ": It's your move." << endl;
+
 			if (current->getHasMoves()) {
 				if (current->getSign() == p1->getSign()) {
 					v = p1v;
 				} else {
 					v = p2v;
 				}
-				cout << "vector size: " << v.size()<<endl;
-				for (unsigned int i = 0; i < v.size(); i++) {
 
-					cout << '(' << v[i].x << ',' << v[i].y << ") ";
-				}
-				cout << endl;
-				current->playTurn(c);
+				current->playTurn(c,v,b);
 
 				//make sure valid move was entered.
 				while (!ReversieGame::checkValidInput(c, v)) {
 					cout << "please enter valid move" << endl;
-					current->playTurn(c);
+					current->playTurn(c,v,b);
 				}
 
 				//alter board

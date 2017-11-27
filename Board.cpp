@@ -36,10 +36,6 @@ Board::Board(Shortcuts::matrix b, ConsoleDisplayer d) {
 }
 
 Board::Board(int size) {
-//	vector<vector<char> > matrix(size + 1);
-//	for (int i = 0 ; i < size + 1 ;i++ ) {
-//		matrix[i].resize(size + 1);
-//	}
 
 	Shortcuts::matrix matrix((size + 1), vector<char>(size + 1));
 	board = matrix;
