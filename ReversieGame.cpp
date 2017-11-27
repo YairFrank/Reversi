@@ -7,7 +7,7 @@
 
 #include "Shortcuts.h"
 #include "ReversieGame.h"
-#include "AIPlayer.h"
+#include "AIplayer.h"
 
 using namespace std;
 //typedef vector<vector<char> > matrix;
@@ -27,7 +27,7 @@ void ReversieGame::play() {
     }
     if (a==2){
         p1 = new HumanPlayer('X');
-        p2 = new AIPlayer('O');
+        p2 = new AIplayer('O');
     }
 	Shortcuts::matrix board;
 	Player* current = p1;
