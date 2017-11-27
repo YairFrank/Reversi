@@ -9,11 +9,11 @@
 #include "Shortcuts.h"
 #include "Player.h"
 
-class AIplayer: public Player {
+class AIPlayer: public Player {
 
 public:
-    AIplayer();
-    AIplayer(char x);
+    AIPlayer();
+    AIPlayer(char x);
     void playTurn(Shortcuts::coordinate &c) override;
 
 private:
