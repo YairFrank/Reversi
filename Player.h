@@ -5,8 +5,9 @@
 #ifndef REVERSI_PLAYER_H
 #define REVERSI_PLAYER_H
 
-#include "Board.h"
+
 #include "Shortcuts.h"
+#include "Board.h"
 
 class Player {
 

@@ -4,37 +4,38 @@
 * leah orlin 313357725
  */
 
-#ifndef PLAYER_H_
-#define PLAYER_H_
+#ifndef REVERSI_HUMANPLAYER_H
+#define REVERSI_HUMANPLAYER_H
 #include "Shortcuts.h" //in order to get the typedefs
 #include "Player.h"
 
 class HumanPlayer: public Player {
 
 public:
-	/**
-	 * default constructor.
-	 */
-	HumanPlayer();
+    /**
+     * default constructor.
+     */
+    HumanPlayer();
 
-	/**
-	 * constructor for player, given sign.
-	 * @param x player's sign.
-	 */
-	HumanPlayer(char x);
+    /**
+     * constructor for player, given sign.
+     * @param x player's sign.
+     */
+    HumanPlayer(char x);
 
-	/**
-	 * player plays a turn.
-	 * @param c coordinate to place player on.
-	 */
-	void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b) override;
+    /**
+     * player plays a turn.
+     * @param c coordinate to place player on.
+     */
+    void playTurn(Shortcuts::coordinate &c) override;
 
 private:
-	char sign;
-	bool hasMoves;
+    char sign;
+    bool hasMoves;
 };
 
 #endif /* PLAYER_H_ */
 
 
 
+#endif //REVERSI_HUMANPLAYER_H

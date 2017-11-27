@@ -3,8 +3,6 @@
 //
 
 #include "AIPlayer.h"
-#include "Shortcuts.h"
-#include <iostream>
 
 using namespace std;
 

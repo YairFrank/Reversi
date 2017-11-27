@@ -5,7 +5,6 @@
  */
 
 #include "HumanPlayer.h"
-#include <iostream>
 
 using namespace std;
 
@@ -13,7 +12,7 @@ HumanPlayer::HumanPlayer():Player (){}
 
 HumanPlayer::HumanPlayer(char x): Player (x){}
 
-void HumanPlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec v, Board b) {
+void HumanPlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec v, Board &b) {
 	int x,y;
 	char c;
 
