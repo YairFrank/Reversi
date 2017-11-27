@@ -8,13 +8,11 @@
 using namespace std;
 
 Player::Player(): sign('X'), hasMoves(true) {
-    vector<Shortcuts::coordinate> v;
 }
 
 Player::Player(char x) {
     sign = x;
     hasMoves = true;
-    vector<Shortcuts::coordinate> v;
 }
 
 void Player::setHasMoves(bool x) {
