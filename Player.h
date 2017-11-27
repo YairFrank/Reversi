@@ -5,7 +5,7 @@
 #ifndef REVERSI_PLAYER_H
 #define REVERSI_PLAYER_H
 
-
+#include "Board.h"
 #include "Shortcuts.h"
 
 class Player {
@@ -13,12 +13,12 @@ class Player {
 public:
     Player();
     Player(char x);
-    virtual void playTurn(Shortcuts::coordinate &c) =0;
+    virtual void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b) =0;
     void setHasMoves(bool x);
     bool getHasMoves() const;
     char getSign() const;
 
-private:
+protected:
     char sign;
     bool hasMoves;
 };

@@ -9,8 +9,10 @@ CPP_SRCS += \
 ../ConsoleDisplayer.cpp \
 ../Displayer.cpp \
 ../GameLogic.cpp \
-../Main.cpp \
 ../HumanPlayer.cpp \
+../Main.cpp \
+../Menu.cpp \
+../Player.cpp \
 ../ReversieGame.cpp 
 
 OBJS += \
@@ -19,8 +21,10 @@ OBJS += \
 ./ConsoleDisplayer.o \
 ./Displayer.o \
 ./GameLogic.o \
-./Main.o \
 ./HumanPlayer.o \
+./Main.o \
+./Menu.o \
+./Player.o \
 ./ReversieGame.o 
 
 CPP_DEPS += \
@@ -29,8 +33,10 @@ CPP_DEPS += \
 ./ConsoleDisplayer.d \
 ./Displayer.d \
 ./GameLogic.d \
-./Main.d \
 ./HumanPlayer.d \
+./Main.d \
+./Menu.d \
+./Player.d \
 ./ReversieGame.d 
 
 

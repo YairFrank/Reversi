@@ -30,9 +30,7 @@ void ConsoleDisplayer::display(const vector<vector<char> > &vec) const{
 		cout << k << '|';
 		while (l < size -1) {
 			cout << ' ' << vec[i][l];
-//			if (l!= size + 3) {
-//				cout << " |";
-//			}
+
 			cout << " |";
 			l++;
 		}

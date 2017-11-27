@@ -27,7 +27,7 @@ public:
 	 * player plays a turn.
 	 * @param c coordinate to place player on.
 	 */
-	void playTurn(Shortcuts::coordinate &c) override;
+	void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b) override;
 
 private:
 	char sign;

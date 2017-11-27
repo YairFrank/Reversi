@@ -10,29 +10,94 @@ using namespace std;
 
 AIPlayer::AIPlayer(): Player (){}
 
-AIPlayer::AIPlayer(char x): Player (x){}
+AIPlayer::AIPlayer(char x): Player(x){}
 
-void AIPlayer::playTurn(Shortcuts::coordinate &coord) {
-    int x,y;
-    char c;
 
-    cout << "Please enter your move row,column:" << endl;
-    cin >> x >> c >> y;
 
-    //check for correct user input
-    while(cin.fail() || c != ',') {
-        cout << "Error, please enter move in requested format" << endl;
-        cin.clear();
-        cin.ignore(256,'\n');
-        cin >> x >> c >> y;
-    }
+//AIPlayer::AIPlayer(Board b): board(b), gl(GameLogic()){}
 
-    while (x < 1 || x > 8 || y < 1 || y > 8) {
-        cout << "coordinates out of bounds. please submit your move again" << endl;
-        cin.clear();
-        cin.ignore(256,'\n');
-        cin >> x >> c >> y;
-    }
-    coord.x = x;
-    coord.y = y;
+void AIPlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec v, Board &board) {
+	GameLogic gl;
+	Board dup;
+	Shortcuts::coordVec aiMoves = v;
+	Shortcuts::coordVec::iterator it;
+	Shortcuts::coordinate c;
+
+	Shortcuts::matrix b = board.getBoard();
+	Shortcuts::aiOption option, bestOption;
+	vector <Shortcuts::aiOption> options;
+	vector <Shortcuts::aiOption> :: iterator optionsIt;
+	int minScore = b.size() ^2;	//maximum score possible
+
+	for (it = aiMoves.begin(); it != aiMoves.end(); it++) {
+		c = *it;
+		option.move = c;
+		//we want to check each possible move in a new board, as if the others were not tried first.
+		dup = Board(board);
+		dup.enterMove(sign, c.x, c.y);
+		option.score = getOpponentsBestOption(dup);	//fill options
+		options.push_back(option);
+	}
+
+	//find best option for AI player, after gaining data for all available options.
+	for (optionsIt = options.begin(); optionsIt != options.end(); ++ optionsIt ) {
+		option = *optionsIt;
+		if (option.score < minScore) {
+			minScore = option.score;
+			bestOption = option;
+		}
+	}
+
+	//set AI move to be the coordinates of the best move available
+	coord.x = bestOption.move.x;
+	coord.y = bestOption.move.y;
+
+
 }
+
+int AIPlayer::getOpponentsBestOption(Board b) {
+	GameLogic gl;
+
+	char oppSign = AIPlayer::getOppSign();
+	vector<int> scores;
+	int score = 0, bestScore = 0;
+	Shortcuts::coordVec oppPlayerMoves, flips;
+	Shortcuts::matrix dup;
+	Board dupBoard;
+	Shortcuts::coordVec::iterator it, flipIt;
+	Shortcuts::coordinate possibleMove, flip;
+	char s;
+
+	s = AIPlayer::getOppSign();
+	dupBoard = Board(b);
+	dup = dupBoard.getBoard();
+	gl.getValidMoves(oppSign, oppPlayerMoves, dup);
+	//check which possible move will be most profitable for opponent
+	for (it = oppPlayerMoves.begin(); it != oppPlayerMoves.end(); ++it) {
+		//does this change board, or copy?????
+		dupBoard = Board(b);
+		dup = dupBoard.getBoard();
+		possibleMove = *it;
+		dupBoard.enterMove(s,possibleMove.x, possibleMove.y);
+		flips = gl.flipTokens(s, possibleMove.x - 1, possibleMove.y - 1,
+				dup);
+
+		//flipping the tokens
+		for (flipIt = flips.begin(); flipIt != flips.end(); ++flipIt) {
+			flip = *flipIt;
+			dupBoard.enterMove(s, flip.x + 1, flip.y + 1);
+		}
+
+		// check score
+		score = dupBoard.getScore(oppSign, sign);
+		if (score > bestScore) {
+			bestScore = score;
+		}
+
+	}
+	return bestScore;
+}
+
+
+
+
