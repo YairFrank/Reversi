@@ -6,7 +6,7 @@
 
 #ifndef REVERSIEGAME_H_
 #define REVERSIEGAME_H_
-#include "Player.h"
+#include "HumanPlayer.h"
 #include "Board.h"
 #include "GameLogic.h"
 #include "Shortcuts.h"
@@ -18,12 +18,7 @@ public:
 	/**
 	 * default constructor.
 	 */
-	ReversieGame();
-
-	/**
-	 * default destructor.
-	 */
-	virtual ~ReversieGame();
+	ReversieGame(int a);
 
 	/**
 	 * play the game.
@@ -33,7 +28,7 @@ public:
 	/**
 	 * @return the sign of the winner (t if tied).
 	 */
-	char getWinner() const;
+	char getWinner(Player* p1, Player* p2) const;
 
 	/**
 	 * check if given coordinate is one of the available moves.
@@ -47,13 +42,11 @@ private:
 
 	bool gameOver;
 
-	Player p1, p2;
-
 	Board b;
 
 	GameLogic gl;
 
-
+	int a;
 
 
 

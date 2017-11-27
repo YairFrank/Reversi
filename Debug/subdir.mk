@@ -10,7 +10,7 @@ CPP_SRCS += \
 ../Displayer.cpp \
 ../GameLogic.cpp \
 ../Main.cpp \
-../Player.cpp \
+../HumanPlayer.cpp \
 ../ReversieGame.cpp 
 
 OBJS += \
@@ -20,7 +20,7 @@ OBJS += \
 ./Displayer.o \
 ./GameLogic.o \
 ./Main.o \
-./Player.o \
+./HumanPlayer.o \
 ./ReversieGame.o 
 
 CPP_DEPS += \
@@ -30,7 +30,7 @@ CPP_DEPS += \
 ./Displayer.d \
 ./GameLogic.d \
 ./Main.d \
-./Player.d \
+./HumanPlayer.d \
 ./ReversieGame.d 
 
 

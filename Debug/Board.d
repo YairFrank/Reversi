@@ -1,5 +1,5 @@
 Board.o: ../Board.cpp ../Board.h ../Displayer.h ../ConsoleDisplayer.h \
- ../GameLogic.h ../Player.h ../Shortcuts.h
+ ../GameLogic.h ../HumanPlayer.h ../Shortcuts.h
 
 ../Board.h:
 
@@ -9,6 +9,6 @@ Board.o: ../Board.cpp ../Board.h ../Displayer.h ../ConsoleDisplayer.h \
 
 ../GameLogic.h:
 
-../Player.h:
+../HumanPlayer.h:
 
 ../Shortcuts.h:

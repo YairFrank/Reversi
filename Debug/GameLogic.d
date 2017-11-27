@@ -1,7 +1,7 @@
-GameLogic.o: ../GameLogic.cpp ../GameLogic.h ../Player.h ../Shortcuts.h
+GameLogic.o: ../GameLogic.cpp ../GameLogic.h ../HumanPlayer.h ../Shortcuts.h
 
 ../GameLogic.h:
 
-../Player.h:
+../HumanPlayer.h:
 
 ../Shortcuts.h:
