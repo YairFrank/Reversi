@@ -26,10 +26,16 @@ bool Player::hasOptions() const{
 	return hasMoves;
 }
 
-void Player::playTurn(Shortcuts::coordinate &coord) {
+void Player::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v) {
 	int x,y;
 	char c;
 
+	cout << sign << ": It's your move. possible moves are:" << endl;
+	for (unsigned int i = 0; i < v.size(); i++) {
+
+		cout << '(' << v[i].x << ',' << v[i].y << ") ";
+	}
+	cout << endl;
 	cout << "Please enter your move row,column:" << endl;
 	cin >> x >> c >> y;
 

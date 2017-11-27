@@ -1,5 +1,6 @@
 Main.o: ../Main.cpp ../Board.h ../Displayer.h ../ConsoleDisplayer.h \
- ../GameLogic.h ../Player.h ../Shortcuts.h ../ReversieGame.h
+ ../GameLogic.h ../Player.h ../Shortcuts.h ../ReversieGame.h \
+ ../AIplayer.h
 
 ../Board.h:
 
@@ -14,3 +15,5 @@ Main.o: ../Main.cpp ../Board.h ../Displayer.h ../ConsoleDisplayer.h \
 ../Shortcuts.h:
 
 ../ReversieGame.h:
+
+../AIplayer.h:

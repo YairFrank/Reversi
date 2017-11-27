@@ -15,6 +15,7 @@ public:
 
 		typedef vector<vector<char> > matrix;
 		typedef struct coordinate {int x; int y;} coordinate;
+		typedef struct aiOption {coordinate move; int score;} aiOption;
 		typedef vector<Shortcuts::coordinate> coordVec;
 
 };

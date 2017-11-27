@@ -8,12 +8,12 @@
 #include "Shortcuts.h"
 #include "ReversieGame.h"
 using namespace std;
-//typedef vector<vector<char> > matrix;
-//typedef struct coordinate {int x; int y;} coordinate;
+
 
 ReversieGame::ReversieGame() :
-		gameOver(false), p1(Player('X')), p2(Player('O')), b(Board()), gl(
-				GameLogic(/*b.getBoard()*/)) {
+		gameOver(false), p1(Player('X')), p2('O'), gl(
+				GameLogic()) {
+	b = Board(8);
 }
 
 ReversieGame::~ReversieGame() {
@@ -56,25 +56,20 @@ void ReversieGame::play() {
 		}
 
 			b.print();
-			cout << current.getSign() << ": It's your move." << endl;
+
 			if (current.getHasMoves()) {
 				if (current.getSign() == p1.getSign()) {
 					v = p1v;
 				} else {
 					v = p2v;
 				}
-				cout << "vector size: " << v.size()<<endl;
-				for (unsigned int i = 0; i < v.size(); i++) {
 
-					cout << '(' << v[i].x << ',' << v[i].y << ") ";
-				}
-				cout << endl;
-				current.playTurn(c);
+				current.playTurn(c,v);
 
 				//make sure valid move was entered.
 				while (!ReversieGame::checkValidInput(c, v)) {
 					cout << "please enter valid move" << endl;
-					current.playTurn(c);
+					current.playTurn(c,v);
 				}
 
 				//alter board
@@ -86,8 +81,6 @@ void ReversieGame::play() {
 					b.enterMove(current.getSign(), f.x + 1, f.y + 1);
 				}
 
-				//print board after update
-				b.print();
 				cout << current.getSign() << " played (" << c.x << ',' << c.y
 						<< ')' << endl;
 				p1v.clear();

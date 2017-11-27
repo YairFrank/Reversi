@@ -14,24 +14,34 @@ ConsoleDisplayer::ConsoleDisplayer() {
 void ConsoleDisplayer::display(const vector<vector<char> > &vec) const{
 	unsigned int k = 1;
 	unsigned int l = 0, i = 0;
+	unsigned int size = vec.size();
 	cout << " |";
-	while (k < 9) {
+	while (k < size) {
 		cout << ' ' << k << " |";
 		k++;
 	}
-	cout << endl << "----------------------------------" << endl;
+	cout << endl;
+	for (unsigned int i = 0; i < size; i++) {
+		cout << "-----";
+	}
+	cout << endl;
 	k = 1;
-	while (k < 9) {
+	while (k < size) {
 		cout << k << '|';
-		while (l < vec.size()) {
+		while (l < size -1) {
 			cout << ' ' << vec[i][l];
-			if (l!= vec.size() - 1) {
-				cout << " |";
-			}
+//			if (l!= size + 3) {
+//				cout << " |";
+//			}
+			cout << " |";
 			l++;
 		}
 		l = 0;
-		cout << endl << "----------------------------------" << endl;
+		cout << endl;
+		for (unsigned int m = 0; m < size; m++) {
+			cout << "-----";
+		}
+		cout << endl;
 		k++;
 		i++;
 	}

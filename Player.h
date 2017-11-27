@@ -31,8 +31,9 @@ public:
 	/**
 	 * player plays a turn.
 	 * @param c coordinate to place player on.
+	 * @param v vector of possible moves
 	 */
-	void playTurn(Shortcuts::coordinate &c);
+	void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec &v);
 
 	/**
 	 * set boolean hasMoves.
@@ -56,7 +57,7 @@ public:
 	 */
 	char getSign() const;
 
-private:
+protected:
 
 	char sign;
 
