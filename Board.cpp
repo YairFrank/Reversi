@@ -9,13 +9,13 @@ Board::Board() {
 	vector<vector<char> > matrix(9);
 	board = matrix;
 	for ( int i = 0 ; i < 9 ; i++ ) {
-		board[i].resize(9);
+		board[i].resize(9,' ');
 	}
-	for(int i = 0; i < 9;i++) {
-		for (int j = 0; j< 9; j++) {
-			board[i][j] = ' ';
-		}
-	}
+//	for(int i = 0; i < 9;i++) {
+//		for (int j = 0; j< 9; j++) {
+//			board[i][j] = ' ';
+//		}
+//	}
 
 	//initial values.
 	board[3][4] = 'X';
@@ -35,15 +35,36 @@ Board::Board(Shortcuts::matrix b, ConsoleDisplayer d) {
 	displayer = d;
 }
 
-Board::Board(int size, ConsoleDisplayer d) {
-	vector<vector<char> > matrix(size);
-	for (int i = 0 ; i < 8 ;i++ ) {
-		matrix[i].resize(size);
+Board::Board(int size) {
+//	vector<vector<char> > matrix(size + 1);
+//	for (int i = 0 ; i < size + 1 ;i++ ) {
+//		matrix[i].resize(size + 1);
+//	}
+
+	Shortcuts::matrix matrix((size + 1), vector<char>(size + 1));
+	board = matrix;
+
+	for(int i = 0; i < size + 1;i++) {
+		for (int j = 0; j< size + 1; j++) {
+			board[i][j] = ' ';
+		}
 	}
 
-	board = matrix;
+	//initial values.
+	board[(size / 2) - 1][size / 2] = 'X';
+	board[size / 2][size / 2 - 1] = 'X';
+	board[size / 2 - 1][size / 2 - 1] = 'O';
+	board[size / 2][size / 2] = 'O';
+
+	ConsoleDisplayer d;
 	displayer = d;
 
+}
+
+Board::Board(const Board &b) {
+	Shortcuts::matrix newBoard;
+	board = b.getBoard();
+	displayer = b.getDisplayer();
 }
 
 void Board::print() const{
@@ -100,4 +121,31 @@ char Board::getMaxPoints(char a, char b) const {
 		//players tied.
 		return 't';
 	}
+}
+
+
+
+const ConsoleDisplayer& Board::getDisplayer() const {
+	return displayer;
+}
+
+int Board::getScore(char a, char b) const {
+	int pointsA = 0;
+	int pointsB = 0;
+
+	for (unsigned int i = 0; i < board.size(); i++)
+		{
+		    for (unsigned int j = 0; j < board[i].size(); j++)
+		    {
+		        if (board[i][j] == a)
+		        {
+		        	pointsA++;
+		        }
+		        else if(board[i][j] == b)
+		        {
+		        	pointsB++;
+		        }
+		    }
+		}
+	return (pointsA - pointsB);
 }

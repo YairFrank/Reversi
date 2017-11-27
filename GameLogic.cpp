@@ -21,7 +21,7 @@ GameLogic::~GameLogic() {
 void GameLogic::getValidMoves(char sign, vector<Shortcuts::coordinate> &v, Shortcuts::matrix &board) {
 	int x, y, z = 0,xStart,yStart;
 	int outOfBounds = board.size() - 1;
-	Shortcuts::coordinate coord,dir, move,temp;
+	Shortcuts::coordinate coord,dir, move;
 	Shortcuts::coordVec playerPos, directions;
 	Shortcuts::coordVec::iterator i,i2,i3;
 

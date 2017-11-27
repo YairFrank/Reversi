@@ -23,11 +23,17 @@ public:
 	Board();
 
 	/**
+	 * copy constructr
+	 * @param b board to be copied
+	 */
+	Board(const Board &b);
+
+	/**
 	 * constructor with parameters for board size and displayer.
 	 * @param size board size.
 	 * @param d displayer.
 	 */
-	Board(int size, ConsoleDisplayer d);
+	Board(int size);
 
 	/**
 	 * constructor given matrix and displayer.
@@ -66,6 +72,18 @@ public:
 	 * @return the sign of the winner.
 	 */
 	char getMaxPoints(char a, char b) const;
+
+	/**
+	 * @return the boards displayer.
+	 */
+	const ConsoleDisplayer& getDisplayer() const;
+
+	/**
+	 * @param a first players sign.
+	 * @param b second players sign.
+	 * @return first players score (his points minus opponents points).
+	 */
+	int getScore(char a, char b) const;
 
 private:
 	Shortcuts::matrix board;

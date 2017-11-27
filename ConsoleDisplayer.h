@@ -1,7 +1,6 @@
 /*
  * ConsoleDisplayer.h
  *
-/*
  * leah orlin 313357725
  */
 
