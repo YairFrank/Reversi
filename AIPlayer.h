@@ -6,7 +6,6 @@
 #define AIPLAYER_H
 
 
-#include "Shortcuts.h"
 #include "Player.h"
 
 class AIPlayer: public Player {

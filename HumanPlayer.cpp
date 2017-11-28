@@ -6,7 +6,6 @@
  */
 
 #include "HumanPlayer.h"
-#include <iostream>
 
 using namespace std;
 
