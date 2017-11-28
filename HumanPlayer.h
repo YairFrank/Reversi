@@ -1,13 +1,12 @@
-/*
- * Player.h
- *
-* leah orlin 313357725
- */
+//
+// Created by yair on 28/11/17.
+//
 
 #ifndef REVERSI_HUMANPLAYER_H
 #define REVERSI_HUMANPLAYER_H
-#include "Shortcuts.h" //in order to get the typedefs
+
 #include "Player.h"
+
 
 class HumanPlayer: public Player {
 
@@ -27,14 +26,10 @@ public:
      * player plays a turn.
      * @param c coordinate to place player on.
      */
-    void playTurn(Shortcuts::coordinate &c);
+    void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b);
 
 private:
     char sign;
     bool hasMoves;
 };
-
-
-
-
 #endif //REVERSI_HUMANPLAYER_H

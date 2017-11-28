@@ -14,9 +14,8 @@ set(SOURCE_FILES
         GameLogic.h
         Main.cpp
         HumanPlayer.cpp
-        HumanPlayer.h
         ReversieGame.cpp
         ReversieGame.h
-        Shortcuts.h AIPlayer.cpp AIPlayer.h Player.cpp Menu.cpp Menu.h HumanPlayer.h Player.h)
+        Shortcuts.h AIPlayer.cpp AIPlayer.h Player.cpp Menu.cpp Menu.h Player.h HumanPlayer.h)
 
 add_executable(Reversi ${SOURCE_FILES})

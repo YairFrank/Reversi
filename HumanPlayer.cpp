@@ -5,6 +5,7 @@
  */
 
 #include "HumanPlayer.h"
+#include "Board.h"
 
 using namespace std;
 

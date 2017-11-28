@@ -19,7 +19,7 @@ public:
      * @param c the coordinate the computer will decide on.
      * @param v vector of all AI's possible moves.
      */
-    void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b) override;
+    void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b);
 
 	/**
 	 *
