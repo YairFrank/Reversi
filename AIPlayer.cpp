@@ -95,7 +95,8 @@ int AIPlayer::getOpponentsBestOption(Board b) {
 	}
 	return bestScore;
 }
-
-
-
-
+char AIPlayer::getOppSign() const{
+    if(sign=='X')
+        return 'O';
+    return 'X';
+}

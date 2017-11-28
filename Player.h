@@ -17,7 +17,7 @@ public:
     bool getHasMoves() const;
     char getSign() const;
 
-private:
+protected:
     char sign;
     bool hasMoves;
 };

@@ -5,7 +5,6 @@
 
 #ifndef GAMELOGIC_H_
 #define GAMELOGIC_H_
-#include "HumanPlayer.h"
 #include "Shortcuts.h"
 #include <vector>
 #include <iostream>
