@@ -1,13 +1,20 @@
 /*
- * Player.cpp
+ * HumanPlayer.cpp
  *
-* leah orlin 313357725
+ *  Created on: Nov 28, 2017
+ *      Author: leah
  */
 
 #include "HumanPlayer.h"
 #include "Board.h"
 
 using namespace std;
+
+
+HumanPlayer::~HumanPlayer() {
+	// TODO Auto-generated destructor stub
+}
+
 
 HumanPlayer::HumanPlayer():Player (){}
 

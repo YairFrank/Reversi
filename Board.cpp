@@ -11,11 +11,6 @@ Board::Board() {
 	for ( int i = 0 ; i < 9 ; i++ ) {
 		board[i].resize(9,' ');
 	}
-//	for(int i = 0; i < 9;i++) {
-//		for (int j = 0; j< 9; j++) {
-//			board[i][j] = ' ';
-//		}
-//	}
 
 	//initial values.
 	board[3][4] = 'X';
@@ -58,7 +53,6 @@ Board::Board(int size) {
 }
 
 Board::Board(const Board &b) {
-	Shortcuts::matrix newBoard;
 	board = b.getBoard();
 	displayer = b.getDisplayer();
 }

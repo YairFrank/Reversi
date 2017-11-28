@@ -2,8 +2,8 @@
 // Created by yair on 27/11/17.
 //
 
-#ifndef REVERSI_AIPLAYER_H
-#define REVERSI_AIPLAYER_H
+#ifndef AIPLAYER_H
+#define AIPLAYER_H
 
 
 #include "Player.h"
