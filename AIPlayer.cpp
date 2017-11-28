@@ -66,9 +66,7 @@ int AIPlayer::getOpponentsBestOption(Board b) {
 	Board dupBoard;
 	Shortcuts::coordVec::iterator it, flipIt;
 	Shortcuts::coordinate possibleMove, flip;
-	char s;
 
-	s = AIPlayer::getOppSign();
 	dupBoard = Board(b);
 	dup = dupBoard.getBoard();
 	gl.getValidMoves(oppSign, oppPlayerMoves, dup);
@@ -78,14 +76,14 @@ int AIPlayer::getOpponentsBestOption(Board b) {
 		dupBoard = Board(b);
 		dup = dupBoard.getBoard();
 		possibleMove = *it;
-		dupBoard.enterMove(s,possibleMove.x, possibleMove.y);
-		flips = gl.flipTokens(s, possibleMove.x - 1, possibleMove.y - 1,
+		dupBoard.enterMove(oppSign,possibleMove.x, possibleMove.y);
+		flips = gl.flipTokens(oppSign, possibleMove.x - 1, possibleMove.y - 1,
 				dup);
 
 		//flipping the tokens
 		for (flipIt = flips.begin(); flipIt != flips.end(); ++flipIt) {
 			flip = *flipIt;
-			dupBoard.enterMove(s, flip.x + 1, flip.y + 1);
+			dupBoard.enterMove(oppSign, flip.x + 1, flip.y + 1);
 		}
 
 		// check score
@@ -96,6 +94,13 @@ int AIPlayer::getOpponentsBestOption(Board b) {
 
 	}
 	return bestScore;
+}
+
+char AIPlayer::getOppSign() const {
+	if (sign == 'O') {
+		return 'X';
+	}
+	return 'O';
 }
 
 

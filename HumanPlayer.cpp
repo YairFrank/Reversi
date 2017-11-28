@@ -1,7 +1,8 @@
 /*
- * Player.cpp
+ * HumanPlayer.cpp
  *
-* leah orlin 313357725
+ *  Created on: Nov 28, 2017
+ *      Author: leah
  */
 
 #include "HumanPlayer.h"
@@ -9,11 +10,17 @@
 
 using namespace std;
 
+
+HumanPlayer::~HumanPlayer() {
+	// TODO Auto-generated destructor stub
+}
+
+
 HumanPlayer::HumanPlayer():Player (){}
 
 HumanPlayer::HumanPlayer(char x): Player (x){}
 
-void HumanPlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec v, Board b) {
+void HumanPlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec v, Board &b) {
 	int x,y;
 	char c;
 

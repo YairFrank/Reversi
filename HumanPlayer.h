@@ -1,22 +1,19 @@
 /*
- * Player.h
+ * HumanPlayer.h
  *
-* leah orlin 313357725
+ *  Created on: Nov 28, 2017
+ *      Author: leah
  */
 
-#ifndef PLAYER_H_
-#define PLAYER_H_
-#include "Shortcuts.h" //in order to get the typedefs
+#ifndef HUMANPLAYER_H_
+#define HUMANPLAYER_H_
+
 #include "Player.h"
+#include "Shortcuts.h"
 
 class HumanPlayer: public Player {
-
 public:
-	/**
-	 * default constructor.
-	 */
 	HumanPlayer();
-
 	/**
 	 * constructor for player, given sign.
 	 * @param x player's sign.
@@ -27,14 +24,11 @@ public:
 	 * player plays a turn.
 	 * @param c coordinate to place player on.
 	 */
-	void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b) override;
-
-private:
-	char sign;
-	bool hasMoves;
+	void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b);
+	virtual ~HumanPlayer();
 };
 
-#endif /* PLAYER_H_ */
+#endif /* HUMANPLAYER_H_ */
 
 
 

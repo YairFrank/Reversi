@@ -6,11 +6,11 @@
 
 #ifndef REVERSIEGAME_H_
 #define REVERSIEGAME_H_
-#include "HumanPlayer.h"
 #include "Board.h"
 #include "GameLogic.h"
 #include "Shortcuts.h"
 #include "AIPlayer.h"
+#include "HumanPlayer.h"
 
 class ReversieGame {
 public:
@@ -46,7 +46,7 @@ private:
 
 	GameLogic gl;
 
-	int a;
+	int gameOption;
 
 
 

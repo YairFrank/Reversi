@@ -14,18 +14,18 @@ using namespace std;
 //typedef struct coordinate {int x; int y;} coordinate;
 
 ReversieGame::ReversieGame(int a) :
-		gameOver(false), b(Board()), gl(GameLogic(/*b.getBoard()*/)), a(a) {
+		gameOver(false), b(Board()), gl(GameLogic()), gameOption(a) {
 }
 
 
 void ReversieGame::play() {
     Player* p1;
     Player* p2;
-    if (a==1){
+    if (gameOption == 1){
         p1 = new HumanPlayer('X');
         p2 = new HumanPlayer('O');
     }
-    if (a==2){
+    if (gameOption == 2){
         p1 = new HumanPlayer('X');
         p2 = new AIPlayer('O');
     }
@@ -39,6 +39,7 @@ void ReversieGame::play() {
 	char winner;
 	//if exits while loop - neither players have moves. Game over.
 	board = b.getBoard();
+	b.print();
 	while (b.hasFreeSpaces()
 			&& (gl.hasValidMoves(p1->getSign(), p1v, board)
 					|| gl.hasValidMoves(p2->getSign(), p2v, board))) {
@@ -62,7 +63,7 @@ void ReversieGame::play() {
 			p2->setHasMoves(false);
 		}
 
-			b.print();
+			//b.print();
 
 			if (current->getHasMoves()) {
 				if (current->getSign() == p1->getSign()) {
@@ -75,6 +76,7 @@ void ReversieGame::play() {
 
 				//make sure valid move was entered.
 				while (!ReversieGame::checkValidInput(c, v)) {
+					cout <<
 					cout << "please enter valid move" << endl;
 					current->playTurn(c,v,b);
 				}
