@@ -17,6 +17,6 @@ set(SOURCE_FILES
         HumanPlayer.h
         ReversieGame.cpp
         ReversieGame.h
-        Shortcuts.h AIPlayer.cpp AIPlayer.h Player.cpp Player.h Menu.cpp Menu.h HumanPlayer.h)
+        Shortcuts.h AIPlayer.cpp AIPlayer.h Player.cpp Menu.cpp Menu.h HumanPlayer.h Player.h)
 
 add_executable(Reversi ${SOURCE_FILES})
