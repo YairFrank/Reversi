@@ -12,7 +12,6 @@ using namespace std;
 
 
 HumanPlayer::~HumanPlayer() {
-	// TODO Auto-generated destructor stub
 }
 
 

@@ -48,6 +48,7 @@ private:
 
 	int gameOption;
 
+    int a;
 
 
 

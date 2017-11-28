@@ -28,8 +28,6 @@ public:
      */
     void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b);
 
-private:
-    char sign;
-    bool hasMoves;
+    ~HumanPlayer();
 };
 #endif //REVERSI_HUMANPLAYER_H

@@ -89,7 +89,7 @@ void ReversieGame::play() {
 				}
 
 				//print board after update
-				b.print();
+				//b.print();
 				cout << current->getSign() << " played (" << c.x << ',' << c.y
 						<< ')' << endl;
 				p1v.clear();
