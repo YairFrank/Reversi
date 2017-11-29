@@ -6,7 +6,6 @@
 
 #include "Shortcuts.h"
 #include "ReversieGame.h"
-#include "AIPlayer.h"
 
 using namespace std;
 
