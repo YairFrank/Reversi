@@ -1,5 +1,6 @@
 /*
  * leah orlin 313357725
+ * yair frank 203699566
  */
 
 #include "Board.h"
@@ -67,15 +68,15 @@ void Board::enterMove(char x, int i, int j) {
 
 bool Board::hasFreeSpaces() const {
 	for (unsigned int i = 1; i < board.size(); i++)
+	{
+		for (unsigned int j = 1; j < board[i].size(); j++)
 		{
-		    for (unsigned int j = 1; j < board[i].size(); j++)
-		    {
-		    	if (board[i][j] == ' ')
-		        {
-		    		return true;
-		        }
-		    }
+			if (board[i][j] == ' ')
+			{
+				return true;
+			}
 		}
+	}
 	return false;
 }
 
@@ -89,19 +90,19 @@ char Board::getMaxPoints(char a, char b) const {
 	int pointsB = 0;
 
 	for (unsigned int i = 0; i < board.size(); i++)
+	{
+		for (unsigned int j = 0; j < board[i].size(); j++)
 		{
-		    for (unsigned int j = 0; j < board[i].size(); j++)
-		    {
-		        if (board[i][j] == a)
-		        {
-		        	pointsA++;
-		        }
-		        else if(board[i][j] == b)
-		        {
-		        	pointsB++;
-		        }
-		    }
+			if (board[i][j] == a)
+			{
+				pointsA++;
+			}
+			else if(board[i][j] == b)
+			{
+				pointsB++;
+			}
 		}
+	}
 
 	if (pointsA > pointsB) {
 		return a;
@@ -124,18 +125,18 @@ int Board::getScore(char a, char b) const {
 	int pointsB = 0;
 
 	for (unsigned int i = 0; i < board.size(); i++)
+	{
+		for (unsigned int j = 0; j < board[i].size(); j++)
 		{
-		    for (unsigned int j = 0; j < board[i].size(); j++)
-		    {
-		        if (board[i][j] == a)
-		        {
-		        	pointsA++;
-		        }
-		        else if(board[i][j] == b)
-		        {
-		        	pointsB++;
-		        }
-		    }
+			if (board[i][j] == a)
+			{
+				pointsA++;
+			}
+			else if(board[i][j] == b)
+			{
+				pointsB++;
+			}
 		}
+	}
 	return (pointsA - pointsB);
 }

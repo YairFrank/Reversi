@@ -1,7 +1,7 @@
 /*
  * main.cpp
- *
- *  leah orlin 313357725 (orlinle)
+ * yair frank 203699566
+ * leah orlin 313357725
  */
 
 #include <iostream>

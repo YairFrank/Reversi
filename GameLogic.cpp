@@ -2,10 +2,10 @@
  * GameLogic.cpp
  *
  * leah orlin 313357725
+ * yair frank 203699566
  */
 
 #include "GameLogic.h"
-#include <vector>
 
 
 
@@ -84,10 +84,10 @@ void GameLogic::getValidMoves(char sign, vector<Shortcuts::coordinate> &v, Short
 	}
 }
 
-Shortcuts::coordVec GameLogic::flipTokens(char s, int x, int y, Shortcuts::matrix &board) {
+void GameLogic::flipTokens(char s, int x, int y, Shortcuts::matrix &board, Shortcuts::coordVec &flips) {
 	int outOfBounds = board.size() - 1;
 	int xStart, yStart,z = 0;
-	Shortcuts::coordVec directions,flips, mayFlip;
+	Shortcuts::coordVec directions, mayFlip;
 	Shortcuts::coordVec::iterator i, i2;
 	Shortcuts::coordinate dir, op;
 
@@ -98,59 +98,59 @@ Shortcuts::coordVec GameLogic::flipTokens(char s, int x, int y, Shortcuts::matri
 	xStart = x;
 	yStart = y;
 	for (i = directions.begin(); i != directions.end(); i++) {
-				dir = *i;
-				x += dir.x;
-				y += dir.y;
-				//check boundary stipulation
-				while ((x >= 0) && (x < outOfBounds) && (y >= 0) && (y < outOfBounds)) {
-					if (board[x][y] == ' ') {
-						//if reached empty slot, opponent's pieces are not blocked by player's.Realese them.
-						mayFlip.clear();
-						//return to original starting location to probe in a new direction.
-						x = xStart;
-						y = yStart;
-						break;
-					} else if (board[x][y] == s){
-						if (z == 0) {
-							//reached self-occupied square, without passing opponent first.No tokens to flip.
-							//return to original starting location to probe in a new direction.
-							x = xStart;
-							y = yStart;
-							break;
-						} else {
-							/*passed one opponent at least, now known to be blocked by another
-							 * of player's pieces. Add all opponent tokens passed until now to array of
-							 * tokens to be flipped.
-							 */
-							for (unsigned int j = 0; j < mayFlip.size(); j++) {
-								flips.push_back(mayFlip[j]);
-							}
-							//clear array of possible tokens to flip.
-							mayFlip.clear();
-							x = xStart;
-							y = yStart;
-							break;
-						}
-					} else {
-						//reached opponent occupied square
-						z++;	//flag
-						op.x = x;
-						op.y = y;
-						/*add coordinate to array of tokens which may be flipped, depending
-						 * on whether they turn out to be blocked by another of player's pieces.
-						 */
-						mayFlip.push_back(op);
-						x += dir.x;
-						y += dir.y;
-						continue;
-					}
-				}
-				z = 0;
+		dir = *i;
+		x += dir.x;
+		y += dir.y;
+		//check boundary stipulation
+		while ((x >= 0) && (x < outOfBounds) && (y >= 0) && (y < outOfBounds)) {
+			if (board[x][y] == ' ') {
+				//if reached empty slot, opponent's pieces are not blocked by player's.Realese them.
+				mayFlip.clear();
+				//return to original starting location to probe in a new direction.
 				x = xStart;
 				y = yStart;
+				break;
+			} else if (board[x][y] == s){
+				if (z == 0) {
+					//reached self-occupied square, without passing opponent first.No tokens to flip.
+					//return to original starting location to probe in a new direction.
+					x = xStart;
+					y = yStart;
+					break;
+				} else {
+					/*passed one opponent at least, now known to be blocked by another
+                     * of player's pieces. Add all opponent tokens passed until now to array of
+                     * tokens to be flipped.
+                     */
+					for (unsigned int j = 0; j < mayFlip.size(); j++) {
+						flips.push_back(mayFlip[j]);
+					}
+					//clear array of possible tokens to flip.
+					mayFlip.clear();
+					x = xStart;
+					y = yStart;
+					break;
+				}
+			} else {
+				//reached opponent occupied square
+				z++;	//flag
+				op.x = x;
+				op.y = y;
+				/*add coordinate to array of tokens which may be flipped, depending
+                 * on whether they turn out to be blocked by another of player's pieces.
+                 */
+				mayFlip.push_back(op);
+				x += dir.x;
+				y += dir.y;
+				continue;
 			}
-	return flips;
+		}
+		z = 0;
+		mayFlip.clear();
+		x = xStart;
+		y = yStart;
 	}
+}
 
 
 
@@ -202,7 +202,7 @@ Shortcuts::coordVec GameLogic::getDirections() const {
 }
 
 bool GameLogic::checkForDuplicates(Shortcuts::coordVec& v,
-		Shortcuts::coordinate c) {
+								   Shortcuts::coordinate c) {
 	Shortcuts::coordVec::iterator i;
 	Shortcuts::coordinate temp;
 	for (i = v.begin(); i != v.end(); i++) {
@@ -213,4 +213,5 @@ bool GameLogic::checkForDuplicates(Shortcuts::coordVec& v,
 	}
 	return false;
 }
+
 

@@ -1,7 +1,7 @@
 /*
  * ReversieGame.h
- *
-* leah orlin 313357725
+ * yair frank 203699566
+ * leah orlin 313357725
  */
 
 #ifndef REVERSIEGAME_H_

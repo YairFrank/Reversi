@@ -1,6 +1,7 @@
 /*
  * ConsoleDisplayer.cpp
  * leah orlin 313357725
+ * yair frank 203699566
  */
 
 #include "ConsoleDisplayer.h"
@@ -22,7 +23,10 @@ void ConsoleDisplayer::display(const vector<vector<char> > &vec) const{
 	}
 	cout << endl;
 	for (unsigned int i = 0; i < size; i++) {
-		cout << "-----";
+		if (i==size-1)
+			cout<<"--";
+		else
+			cout << "----";
 	}
 	cout << endl;
 	k = 1;
@@ -37,7 +41,10 @@ void ConsoleDisplayer::display(const vector<vector<char> > &vec) const{
 		l = 0;
 		cout << endl;
 		for (unsigned int m = 0; m < size; m++) {
-			cout << "-----";
+			if (m==size-1)
+				cout<<"--";
+			else
+				cout << "----";
 		}
 		cout << endl;
 		k++;

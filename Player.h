@@ -1,6 +1,5 @@
-//
-// Created by yair on 28/11/17.
-//
+// leah orlin 313357725
+// yair frank 203699566
 
 #ifndef REVERSI_PLAYER_H
 #define REVERSI_PLAYER_H

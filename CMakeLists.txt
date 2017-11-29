@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(Reversi)
 
 set(CMAKE_CXX_STANDARD 11)
+add_definitions(-std=gnu++0x)
 
 set(SOURCE_FILES
         Board.cpp
