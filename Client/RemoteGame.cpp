@@ -24,7 +24,6 @@ void RemoteGame::play() {
     }
     catch (const char *msg) {
         cout << "Failed to connect to server. Reason:" << msg << endl;
-        exit(-1);
     }
     //writing random
     int n=write(cl.getSocket(), &num, sizeof(num));
