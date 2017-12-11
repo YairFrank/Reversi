@@ -15,7 +15,7 @@ void RemoteGame::initialize() {
 
 }
 void RemoteGame::play() {
-    int num=5, numplay;
+    int numplay, waitmsg, n, num;
     char current, other;
     bool firstMove=true;
     RemotePlayer* p;
@@ -34,19 +34,27 @@ void RemoteGame::play() {
     catch (const char *msg) {
         cout << "Failed to connect to server. Reason:" << msg << endl;
     }
-    //writing random
-    int n=write(cl.getSocket(), &num, sizeof(num));
-    if (n == -1)
-        throw "Error writing number from socket";
-    n=read(cl.getSocket(), &num, sizeof(num));
+
+    //get information from server that client should wait for another player to connect/player symbol
+    n=read(cl.getSocket(), &waitmsg, sizeof(waitmsg));
     if (n == -1)
         throw runtime_error ("Error reading number from socket");
-    numplay=num;
-    if (num==2){
-        n=write(cl.getSocket(), &num, sizeof(num));
+    if (waitmsg == 3) {
+        cout << "waiting for another player to connect..." << endl;
+        //get information from server about player's symbol
+        n=read(cl.getSocket(), &num, sizeof(num));
         if (n == -1)
-            throw "Error writing number from socket";
+            throw runtime_error ("Error reading number from socket");
     }
+
+    //in case current client was not first to connect.
+    if (waitmsg != 3)
+        numplay = waitmsg;
+    else {
+        numplay=num;
+    }
+
+
     if (numplay==1){
         p = new RemotePlayer('X');
         current='X';
@@ -57,6 +65,8 @@ void RemoteGame::play() {
         p = new RemotePlayer('O');
         current='O';
         other='X';
+        cout<<"You are O"<<endl;
+        cout << "Waiting for other player..." << endl;
         cout<<"You are O"<<endl<<"Waiting for other player"<<endl;
     }
     Shortcuts::matrix board;

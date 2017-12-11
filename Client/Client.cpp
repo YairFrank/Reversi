@@ -18,7 +18,6 @@ Client::Client() = default;
 
 Client::Client(const char *serverIP, int serverPort):
         serverIP(serverIP), serverPort(serverPort), clientSocket(0) {
-    cout << "Client" << endl;
 }
 
 void Client::connectToServer() {

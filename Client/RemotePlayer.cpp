@@ -18,15 +18,15 @@ void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v
     Shortcuts::coordinate f;
     Shortcuts::coordVec::iterator it;
     board = b.getBoard();
-    if ((current == 'O' && !firstMove) || current == 'X')
-        b.print();
-    if (!firstMove) {
-        if (coord.x == -1)
-            cout << "No move for " << other << endl;
-        else
-            cout << other << " played (" << coord.x << ',' << coord.y << ')' << endl;
-    }
+
     if ((current == 'O' && !firstMove) || current == 'X') {
+        b.print();
+        if (!firstMove) {
+            if (coord.x == -1)
+                cout << "No move for " << other << endl;
+            else
+                cout << other << " played (" << coord.x << ',' << coord.y << ')' << endl;
+        }
         if (gl.hasValidMoves(current, v, board)) {
             if (!v.empty()) {
                 setHasMoves(true);
@@ -84,7 +84,7 @@ void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v
                 }
                 flips.clear();
                 b.print();
-                cout << "Waiting fot other player's move..." << endl;
+                cout << "Waiting for other player's move..." << endl;
                 v.clear();
                 board = b.getBoard();
             }
