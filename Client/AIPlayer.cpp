@@ -10,14 +10,16 @@ AIPlayer::AIPlayer(): Player (){}
 AIPlayer::AIPlayer(char x): Player(x){}
 
 
-void AIPlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec v, Board &board) {
+void AIPlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v,
+                        Board &board, GameLogic &gamel, char &current, char &other, Client &cl, bool &firstMove) {
     GameLogic gl;
     Board dup;
     Shortcuts::coordVec flips, aiMoves = v;
-    Shortcuts::coordVec::iterator it;
+    Shortcuts::coordVec::iterator it, it1;
     Shortcuts::coordinate c;
     Shortcuts::coordVec::iterator flipIt;
     Shortcuts::coordinate flip;
+    Shortcuts::coordinate f;
     Shortcuts::matrix dupMatrix,b = board.getBoard();
     Shortcuts::aiOption option, bestOption;
     vector <Shortcuts::aiOption> options;
@@ -59,8 +61,15 @@ void AIPlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec v, Boa
     //set AI move to be the coordinates of the least advantageous to player.
     coord.x = bestOption.move.x;
     coord.y = bestOption.move.y;
+    //alter board
+    board.enterMove(current, coord.x, coord.y);
 
-
+    gl.flipTokens(current, coord.x - 1, coord.y - 1, b, flips);
+    for (it1 = flips.begin(); it1 != flips.end(); it1++) {
+        f = *it1;
+        board.enterMove(current, f.x + 1, f.y + 1);
+    }
+    flips.clear();
 }
 
 int AIPlayer::getOpponentsBestOption(Board b) {

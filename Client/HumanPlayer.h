@@ -25,8 +25,9 @@ public:
      * player plays a turn.
      * @param c coordinate to place player on.
      */
-    void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b);
-
+    void playTurn
+            (Shortcuts::coordinate &c, Shortcuts::coordVec &v,
+             Board &b, GameLogic &gl, char &current, char &other, Client &cl, bool &firstMove);
     ~HumanPlayer();
 };
 #endif //REVERSI_HUMANPLAYER_H

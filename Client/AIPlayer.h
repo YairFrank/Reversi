@@ -18,8 +18,8 @@ public:
      * @param c the coordinate the computer will decide on.
      * @param v vector of all AI's possible moves.
      */
-    void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec v, Board &b);
-
+    void playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v,
+				  Board &b, GameLogic &gamel, char &current, char &other, Client &cl, bool &firstMove);
 	/**
 	 *
 	 * @param b board.

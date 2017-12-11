@@ -9,8 +9,8 @@
 #include "Board.h"
 #include "GameLogic.h"
 #include "Shortcuts.h"
-#include "AIPlayer.h"
-#include "HumanPlayer.h"
+#include "Player.h"
+
 
 class ReversieGame {
 public:
@@ -36,7 +36,6 @@ public:
 	 * @param v vector of available moves (coordinates).
 	 * @return true if move is valid, false otherwise.
 	 */
-	bool checkValidInput(Shortcuts::coordinate &c, vector<Shortcuts::coordinate> &v) const;
 
 private:
 
