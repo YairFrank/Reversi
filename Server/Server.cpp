@@ -56,11 +56,21 @@ void Server::start() {
         //accept a players connection
         int player1Socket = accept(serverSocket, (struct sockaddr *)&player1Address, &player1AddressLen);
         cout << "Player 1 connected" << endl;
+        numclients++;
         if (player1Socket == -1) {
             throw "Error on accept";
         }
-        numclients++;
-        
+
+        if (numclients == 1) {
+            int op = 3;
+            //let player know he is connected and waiting for second player to connect.
+            int n = write(player1Socket, &op, sizeof(op));
+            if (n == -1) {
+                cout << "error writing to socket"<< endl;
+                return;
+            }
+        }
+
         //accept a new players connection
         int player2Socket = accept(serverSocket, (struct sockaddr *)&player2Address, &player2AddressLen);
         cout << "Player 2 connected" << endl;
@@ -69,26 +79,10 @@ void Server::start() {
         }
         numclients++;
         if (numclients==2){
-            
-            
-            //player1
-            int n = read(player1Socket, &num, sizeof(num));
-            if (n == -1)
-                cout << "Error reading" << endl;
+
             Server::assignSymbol(player1Socket, 1);
-            
-            
-            //player2
-            n = read(player2Socket, &num, sizeof(num));
-            if (n == -1)
-                cout << "Error reading" << endl;
             Server::assignSymbol(player2Socket, 2);
-            
-            //read random 2
-            n = read(player2Socket, &num, sizeof(num));
-            if (n == -1)
-                cout << "Error reading" << endl;
-            
+
             
             do {
                 move = handleClient(player1Socket, move, firstMove);
@@ -101,6 +95,7 @@ void Server::start() {
             //close communication with the client
             close(player1Socket);
             close(player2Socket);
+            numclients = 0;
         }
         //both players are connected, send them each their numbers.
     }
