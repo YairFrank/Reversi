@@ -10,11 +10,34 @@
 
 class Client {
 public:
+    /**
+     * constructor
+     */
     Client ();
+    /**
+     * constructor
+     * @param serverIP
+     * @param serverPort
+     */
     Client (const char *serverIP, int serverPort);
+    /**
+     * connecting to the server
+     */
     void connectToServer();
+    /**
+     * writing the coordinate to the server
+     * @param c
+     */
     void sendCoord(Shortcuts::coordinate &c);
+    /**
+     * reading the coordinate to the server
+     * @param c
+     */
     void getCoord(Shortcuts::coordinate &c);
+    /**
+     * getting the socket number
+     * @return the socket number
+     */
     int getSocket();
 private:
 

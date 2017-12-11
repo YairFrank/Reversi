@@ -67,7 +67,6 @@ void RemoteGame::play() {
         other='X';
         cout<<"You are O"<<endl;
         cout << "Waiting for other player..." << endl;
-        cout<<"You are O"<<endl<<"Waiting for other player"<<endl;
     }
     Shortcuts::matrix board;
     Shortcuts::coordVec pv;
