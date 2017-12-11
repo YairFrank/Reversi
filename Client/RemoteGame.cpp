@@ -3,12 +3,13 @@
 //
 
 #include <unistd.h>
+#include <fstream>
 #include "RemoteGame.h"
 #include "RemotePlayer.h"
 
 using namespace std;
 
-RemoteGame::RemoteGame() : b(Board()), gl(GameLogic()) {
+RemoteGame::RemoteGame() : b(Board(4)), gl(GameLogic()) {
 }
 void RemoteGame::initialize() {
 
@@ -18,7 +19,15 @@ void RemoteGame::play() {
     char current, other;
     bool firstMove=true;
     RemotePlayer* p;
-    Client cl("127.0.0.1", 8234);
+    string IP;
+    int port;
+    ifstream inFile;
+    inFile.open("infoclient.txt");
+    inFile >> IP;
+    inFile >> port;
+    inFile.close();
+    const char* ip= IP.c_str();
+    Client cl(ip, port);
     try {
         cl.connectToServer();
     }
@@ -48,7 +57,7 @@ void RemoteGame::play() {
         p = new RemotePlayer('O');
         current='O';
         other='X';
-        cout<<"You are O"<<endl;
+        cout<<"You are O"<<endl<<"Waiting for other player"<<endl;
     }
     Shortcuts::matrix board;
     Shortcuts::coordVec pv;

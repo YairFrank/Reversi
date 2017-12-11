@@ -1,9 +1,15 @@
 #include<iostream>
 #include<stdlib.h>
+#include <fstream>
 #include "Server.h"
 using namespace std;
 int main() {
-    Server server(8234);
+    int port;
+    ifstream inFile;
+    inFile.open("infoserver.txt");
+    inFile >> port;
+    inFile.close();
+    Server server(port);
     try
     {
         server.start();

@@ -101,6 +101,7 @@ void Server::start() {
             //close communication with the client
             close(player1Socket);
             close(player2Socket);
+            numclients=0;
         }
         //both players are connected, send them each their numbers.
     }
