@@ -3,11 +3,10 @@
 //
 
 #include"CommandsManager.h"
-#include"PrintCommand.h"
 
 
 CommandsManager::CommandsManager() {
-    commandsMap["print"] = new PrintCommand();
+    //commandsMap["print"] = new PrintCommand();
 // Add more commands...
 }
 
