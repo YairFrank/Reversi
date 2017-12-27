@@ -8,22 +8,24 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
+#include <cstdlib>
+#include <vector>
 
 using namespace std;
 #define MAX_CONNECTED_CLIENTS 2
 
 
-
 Server::Server(int port): port(port), serverSocket(0) {
     cout << "Server" << endl;
-
 }
-
+struct Args {int & numclients;};
 void Server::start() {
+    Args args;
+    pthread_t thread;
     bool firstMove = true;
     coordinate move;
     int num;
-    int numclients=0;
+    args.numclients=0;
     //create socket point
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket == -1) {
@@ -43,18 +45,22 @@ void Server::start() {
     listen(serverSocket, MAX_CONNECTED_CLIENTS);
 
     //define the client socket's structures
-    struct sockaddr_in player1Address;
-    socklen_t player1AddressLen;
+    //struct sockaddr_in playerAddress;
+    //socklen_t playerAddressLen;
 
     //define the client socket's structures
-    struct sockaddr_in player2Address;
-    socklen_t player2AddressLen;
-
+    //struct sockaddr_in player2Address;
+    //socklen_t player2AddressLen;
+    int rc = pthread_create(&thread, NULL, connect, &args);
+    if (rc) {
+        cout << "Error: unable to create thread, " << rc << endl;
+        exit(-1);
+    }
     while (true) {
         cout << "Waiting for client connections..." << endl;
-
+        connect (&args);
         //accept a players connection
-        int player1Socket = accept(serverSocket, (struct sockaddr *)&player1Address, &player1AddressLen);
+        /*int player1Socket = accept(serverSocket, (struct sockaddr *)&player1Address, &player1AddressLen);
         cout << "Player 1 connected" << endl;
         numclients++;
         if (player1Socket == -1) {
@@ -77,8 +83,8 @@ void Server::start() {
         if (player2Socket == -1) {
             throw "Error on accept";
         }
-        numclients++;
-        if (numclients==2){
+        numclients++;*/
+        if (args.numclients==2){
 
             Server::assignSymbol(player1Socket, 1);
             Server::assignSymbol(player2Socket, 2);
@@ -95,7 +101,7 @@ void Server::start() {
             //close communication with the client
             close(player1Socket);
             close(player2Socket);
-            numclients=0;
+            args.numclients=0;
         }
         //both players are connected, send them each their numbers.
     }
@@ -155,4 +161,24 @@ bool Server::isWin(coordinate m) {
         return true;
     }
     return false;
+}
+
+static void *Server::connect (void *args){
+    struct Args *targs = (struct Args *) args;
+    struct sockaddr_in playerAddress;
+    socklen_t playerAddressLen;
+    int playerSocket = accept(serverSocket, (struct sockaddr *)&playerAddress, &playerAddressLen);
+    cout << "Player connected" << endl;
+    targs->numclients++;
+    if (playerSocket == -1) {
+        throw "Error on accept";
+    }
+    if (targs->numclients == 1) {
+        int op = 3;
+        //let player know he is connected and waiting for second player to connect.
+        int n = write(playerSocket, &op, sizeof(op));
+        if (n == -1) {
+            cout << "error writing to socket"<< endl;
+        }
+    }
 }

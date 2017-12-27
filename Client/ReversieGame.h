@@ -10,9 +10,10 @@
 #include "GameLogic.h"
 #include "Shortcuts.h"
 #include "Player.h"
+#include "Game.h"
 
 
-class ReversieGame {
+class ReversieGame : public Game{
 public:
 
 	/**

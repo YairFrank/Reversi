@@ -28,7 +28,6 @@ void Menu::play() {
     }
     else{
         RemoteGame g;
-        g.initialize();
         g.play();
     }
 }

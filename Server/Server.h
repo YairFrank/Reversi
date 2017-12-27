@@ -6,7 +6,10 @@
 #define SERVER_SERVER_H
 
 
+#include <netinet/in.h>
+
 typedef struct coordinate {int x; int y;} coordinate;
+
 
 class Server {
 public:
@@ -26,7 +29,7 @@ public:
 
 private:
     int port;
-    int serverSocket;
+    static int serverSocket;
     /**
      * handling the client
      * @param clientSocket
@@ -47,6 +50,8 @@ private:
      * @return
      */
     bool isWin(coordinate m);
+
+    static  void *connect (void* args);
 };
 
 #endif //SERVER_SERVER_H

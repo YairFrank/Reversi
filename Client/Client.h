@@ -28,12 +28,12 @@ public:
      * writing the coordinate to the server
      * @param c
      */
-    void sendCoord(Shortcuts::coordinate &c);
+    void sendMessage(Shortcuts::coordinate &c);
     /**
      * reading the coordinate to the server
      * @param c
      */
-    void getCoord(Shortcuts::coordinate &c);
+    void getMessage(Shortcuts::coordinate &c);
     /**
      * getting the socket number
      * @return the socket number

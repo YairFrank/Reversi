@@ -51,14 +51,20 @@ void Client::connectToServer() {
     cout<<"Connected to server"<<endl;
 }
 
-void Client::sendCoord(Shortcuts::coordinate &c) {
+void Client::sendMessage(Shortcuts::coordinate &c) {
 // Write the coordinates to the socket
-    int n = write(clientSocket, &c, sizeof(c));
+    struct message{string str; int x; int y;}message;
+    cin>>message.str;
+    cin>>message.x;
+    cin>>message.y;
+    message.x=c.x;
+    message.y=c.y;
+    int n = static_cast<int>(write(clientSocket, &message, 100));
     if (n == -1) {
         throw "Error writing coordinates to socket";
     }
 }
-void Client::getCoord(Shortcuts::coordinate &c) {
+void Client::getMessage(Shortcuts::coordinate &c) {
 // Read the coordinates from the server
     int n = read(clientSocket, &c, sizeof(c));
     if (n == -1) {

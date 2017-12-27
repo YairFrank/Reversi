@@ -11,9 +11,7 @@ using namespace std;
 
 RemoteGame::RemoteGame() : b(Board(4)), gl(GameLogic()) {
 }
-void RemoteGame::initialize() {
 
-}
 void RemoteGame::play() {
     int numplay, waitmsg, n, num;
     char current, other;
@@ -34,7 +32,16 @@ void RemoteGame::play() {
     catch (const char *msg) {
         cout << "Failed to connect to server. Reason:" << msg << endl;
     }
-
+    struct message{string str1; string str2;}message;
+    cout<<"Type one of the commands below:"<<endl<<
+        "start<name>"<<endl<<
+        "list_games" <<endl<<
+        "join <name>"<<endl;
+    cin>>message.str1;
+    cin>>message.str2;
+    n=write(cl.getSocket(), &message, 100);
+    if (n == -1)
+        throw runtime_error ("Error writing message to socket");
     //get information from server that client should wait for another player to connect/player symbol
     n=read(cl.getSocket(), &waitmsg, sizeof(waitmsg));
     if (n == -1)
@@ -71,6 +78,7 @@ void RemoteGame::play() {
     Shortcuts::matrix board;
     Shortcuts::coordVec pv;
     Shortcuts::coordinate c;
+
     char winner;
     //if exits while loop - neither players have moves. Game over.
     while (b.hasFreeSpaces()&&c.x!=-2)

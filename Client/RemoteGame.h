@@ -8,8 +8,9 @@
 
 #include "GameLogic.h"
 #include "Board.h"
+#include "Game.h"
 
-class RemoteGame {
+class RemoteGame : public Game {
 public:
     /**
 	 * default constructor.
@@ -32,7 +33,7 @@ public:
      * @param v vector of available moves (coordinates).
      * @return true if move is valid, false otherwise.
      */
-    void initialize();
+
 private:
 
     Board b;
