@@ -97,7 +97,6 @@ void Server::start() {
             close(player2Socket);
             numclients=0;
         }
-        //both players are connected, send them each their numbers.
     }
 }
 

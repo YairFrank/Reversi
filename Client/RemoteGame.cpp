@@ -9,7 +9,7 @@
 
 using namespace std;
 
-RemoteGame::RemoteGame() : b(Board(4)), gl(GameLogic()) {
+RemoteGame::RemoteGame() : b(Board()), gl(GameLogic()) {
 }
 void RemoteGame::initialize() {
 
