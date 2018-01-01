@@ -6,6 +6,10 @@
 #include <fstream>
 #include "RemoteGame.h"
 #include "RemotePlayer.h"
+#include <iostream>
+#include <string.h>
+#include <string>
+#include <sstream>
 
 using namespace std;
 #define MAX 50
@@ -14,9 +18,13 @@ RemoteGame::RemoteGame() : b(Board()), gl(GameLogic()) {
 }
 
 void RemoteGame::play() {
+    char char_array [MAX];
+    string input;
     int numplay, waitmsg, n, num;
     char current, other;
     bool firstMove=true;
+    char commandStr [MAX];
+    istringstream iss;
     RemotePlayer* p;
     string IP;
     int port;
@@ -33,24 +41,42 @@ void RemoteGame::play() {
     catch (const char *msg) {
         cout << "Failed to connect to server. Reason:" << msg << endl;
     }
-    struct Message {string str1; string str2;};
-    Message message;
-    char str [MAX];
+
+
     cout<<"Choose one of the options below:"<<endl<<endl<<
         "to start a new game, please type - start my_game"<<endl<<endl<<
         "to see existing games, please type - list_games" <<endl<<endl<<
         "to join an existing game from the list, please type - join name_of_game_to_join"<<endl;
-    cin>>str;
-    //cin>>message.str1>>open>>message.str2>>close;
+
+
+    cin.ignore();
+    getline(cin,input);
+    strcpy(char_array,input.c_str());
+
+    //check valid input
+    string str(commandStr);
+    iss.str(str);
+    string command;
+    iss >> command;
+
+
+
     //check for correct user input
-    while (cin.fail()) {
-        cout << "Error, please enter move in requested format" << endl;
+
+    while (cin.fail()|| command != "start" || command != "join" || command != "list_games") {
+        cout << "Error, please enter valid option" << endl;
         cin.clear();
         cin.ignore(256, '\n');
-        //cin>>message.str1>>open>>message.str2>>close;
-        cin>>str;
+        getline(cin,input);
+        strcpy(char_array,input.c_str());
+
+        //check valid input
+        string str(commandStr);
+        iss.str(str);
+        string command;
+        iss >> command;
     }
-    //char cha[20]={'v','d','s','g'};
+    cout << "sending string" << str <<endl;
     n=write(cl.getSocket(), &str , sizeof(str));
     if (n == -1)
         throw runtime_error ("server is closed, dude");
@@ -103,8 +129,8 @@ void RemoteGame::play() {
     } else {
         cout << "Game Over. Winner is " << winner << " :)" << endl;
     }
-    message.str1="close";
-    n=write(cl.getSocket(), &message, 100);
+    //message.str1="close";
+    //n=write(cl.getSocket(), &message, 100);
     if (n == -1)
         throw runtime_error ("server is closed, dude");
     delete p;
