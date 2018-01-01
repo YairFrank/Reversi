@@ -54,16 +54,18 @@ void RemoteGame::play() {
     strcpy(char_array,input.c_str());
 
     //check valid input
-    string str(commandStr);
+    string str(char_array);
     iss.str(str);
     string command;
     iss >> command;
-
+    if (command == "list_games") {
+        cout<<"yay!"<<endl;
+    }
 
 
     //check for correct user input
 
-    while (cin.fail()|| command != "start" || command != "join" || command != "list_games") {
+    while (cin.fail()|| (command != "start" && command != "join" && command != "list_games")) {
         cout << "Error, please enter valid option" << endl;
         cin.clear();
         cin.ignore(256, '\n');
