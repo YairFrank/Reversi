@@ -21,7 +21,7 @@
 
 using namespace std;
 #define MAX_CONNECTED_CLIENTS 10
-#define MAX_COMMAND_LEN 20
+#define MAX_COMMAND_LEN 50
 
 
 Server::Server(int port): port(port), serverSocket(0), clientConnectingThread(0) {
@@ -128,6 +128,7 @@ void* Server::handleClient(void* clientSocket) {
     //clientData cd;
     long sid = (long) clientSocket;
     char commandStr [MAX_COMMAND_LEN];
+    istringstream iss;
     vector<string> args;
     vector<string>::iterator it;
     string s;
@@ -144,17 +145,19 @@ void* Server::handleClient(void* clientSocket) {
     cout << "Received command: " << commandStr << endl;
     // Split the command string to the command name and the arguments
     string str(commandStr);
-    istringstream iss(str);
+    iss.str(str);
     string command;
     iss >> command;
     while (iss) {
+
         string arg;
         iss >> arg;
         args.push_back(arg);
+        cout << "added arg "<< arg <<endl;
     }
     for (it = args.begin(); it != args.end(); ++it) {
         s = *it;
-        cout << "arg: "<< s<<endl;
+
     }
     CommandsManager::getInstance()->executeCommand(command, args, sid);
     args.clear();
