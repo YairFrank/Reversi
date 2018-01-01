@@ -148,6 +148,7 @@ void* Server::handleClient(void* clientSocket) {
     iss.str(str);
     string command;
     iss >> command;
+    cout << "the command is: " << command<< endl;
     while (iss) {
 
         string arg;
