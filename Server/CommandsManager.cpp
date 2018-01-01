@@ -20,6 +20,7 @@ CommandsManager::CommandsManager() {
 
 CommandsManager* CommandsManager::instance = 0;
 pthread_mutex_t CommandsManager::lock;
+
 CommandsManager* CommandsManager::getInstance() {
     if (instance == 0) {
         pthread_mutex_lock(&lock);

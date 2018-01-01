@@ -97,7 +97,7 @@ void* Server::getClients(void* classPointer) {
         }
         threads.push_back(thread);
         cout << "In getClients: creating thread " << i << endl;
-        int rc = pthread_create(&threads[i], NULL, &handleClient, (void *) &playerSocket);
+        int rc = pthread_create(&threads[i], NULL, &handleClient, (void *) playerSocket);
         if (rc) {
             cout << "Error: unable to create thread, " << rc << endl;
             exit(-1);
@@ -144,7 +144,8 @@ void* Server::handleClient(void* clientSocket) {
     string command;
     iss >> command;
     vector<string> args;
-    while (iss) { string arg;
+    while (iss) {
+        string arg;
         iss >> arg;
         args.push_back(arg);
     }
