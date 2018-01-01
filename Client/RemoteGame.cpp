@@ -8,6 +8,7 @@
 #include "RemotePlayer.h"
 
 using namespace std;
+#define MAX 50
 
 RemoteGame::RemoteGame() : b(Board()), gl(GameLogic()) {
 }
@@ -32,26 +33,37 @@ void RemoteGame::play() {
     catch (const char *msg) {
         cout << "Failed to connect to server. Reason:" << msg << endl;
     }
-    struct message{string str1; string str2;}message;
-    cout<<"Type one of the commands below:"<<endl<<
-        "start<name>"<<endl<<
-        "list_games" <<endl<<
-        "join <name>"<<endl;
-    cin>>message.str1;
-    cin>>message.str2;
-    n=write(cl.getSocket(), &message, 100);
+    struct Message {string str1; string str2;};
+    Message message;
+    char str [MAX];
+    cout<<"Choose one of the options below:"<<endl<<endl<<
+        "to start a new game, please type - start<here type a unique name for the game>"<<endl<<endl<<
+        "to see existing games, please type - list_games" <<endl<<endl<<
+        "to join an existing game from the list, please type - join <name of the chosen game>"<<endl;
+    cin>>str;
+    //cin>>message.str1>>open>>message.str2>>close;
+    //check for correct user input
+    while (cin.fail()) {
+        cout << "Error, please enter move in requested format" << endl;
+        cin.clear();
+        cin.ignore(256, '\n');
+        //cin>>message.str1>>open>>message.str2>>close;
+        cin>>str;
+    }
+    char cha[20]={'v','d','s','g'};
+    n=write(cl.getSocket(), &cha , sizeof(cha));
     if (n == -1)
-        throw runtime_error ("Error writing message to socket");
+        throw runtime_error ("server is closed, dude");
     //get information from server that client should wait for another player to connect/player symbol
     n=read(cl.getSocket(), &waitmsg, sizeof(waitmsg));
     if (n == -1)
-        throw runtime_error ("Error reading number from socket");
+        throw runtime_error ("server is closed, dude");
     if (waitmsg == 3) {
         cout << "waiting for another player to connect..." << endl;
         //get information from server about player's symbol
         n=read(cl.getSocket(), &num, sizeof(num));
         if (n == -1)
-            throw runtime_error ("Error reading number from socket");
+            throw runtime_error ("server is closed, dude");
     }
 
     //in case current client was not first to connect.
@@ -78,11 +90,11 @@ void RemoteGame::play() {
     Shortcuts::matrix board;
     Shortcuts::coordVec pv;
     Shortcuts::coordinate c;
-
+    Shortcuts::PlayMessage play;
     char winner;
     //if exits while loop - neither players have moves. Game over.
-    while (b.hasFreeSpaces()&&c.x!=-2)
-        p->playTurn(c, pv, b, gl, current, other, cl, firstMove);
+    while (b.hasFreeSpaces()&&play.x!=-2)
+        p->playTurn(c, pv, b, gl, current, other, cl, firstMove, play);
     // neither player has valid moves available. Game over.
     //announce winner
     winner = RemoteGame::getWinner(current, other);
@@ -91,13 +103,10 @@ void RemoteGame::play() {
     } else {
         cout << "Game Over. Winner is " << winner << " :)" << endl;
     }
-    try{
-        c.x=-3;
-        c.y=-3;
-        cl.sendCoord(c);
-    }catch (const char *msg) {
-        cout << "Failed to send coordinates to server. Reason: " << msg << endl;
-    }
+    message.str1="close";
+    n=write(cl.getSocket(), &message, 100);
+    if (n == -1)
+        throw runtime_error ("server is closed, dude");
     delete p;
 }
 

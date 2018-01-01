@@ -14,11 +14,9 @@ public:
     StartCommand();
 
 
-    virtual void execute(clientData *cd, int sid);
+    virtual void execute(vector <string> cd, int sid);
 
 };
-
-#endif //ROOT_JOINCOMMAND_H
 
 
 #endif //ROOT_STARTCOMMAND_H

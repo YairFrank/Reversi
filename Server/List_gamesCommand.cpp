@@ -3,10 +3,11 @@
 //
 
 #include "List_gamesCommand.h"
+#include "Command.h"
 
 List_gamesCommand::List_gamesCommand() {}
 
-void List_gamesCommand::execute(clientData *cd, int sid) {
+void List_gamesCommand::execute(vector <string> cd, int sid) {
     GamesList* games = GamesList::getGamesList();
     games->display();
 }

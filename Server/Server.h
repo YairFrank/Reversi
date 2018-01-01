@@ -1,14 +1,11 @@
 //
-// Created by yair on 09/12/17.
+// Created by leah on 28/12/17.
 //
 
-#ifndef SERVER_SERVER_H
-#define SERVER_SERVER_H
+#ifndef ROOT_SERVER_H
+#define ROOT_SERVER_H
 
-
-#include <netinet/in.h>
-
-typedef struct coordinate {int x; int y;} coordinate;
+#include "CommandsManager.h"
 
 
 class Server {
@@ -28,8 +25,9 @@ public:
     void stop();
 
 private:
+    bool  quit;
     int port;
-    static int serverSocket;
+    int serverSocket;
     /**
      * handling the client
      * @param clientSocket
@@ -37,13 +35,28 @@ private:
      * @param firstMove
      * @return a coordinate to each client
      */
-    coordinate handleClient(int clientSocket, coordinate move, bool &firstMove);
+    static void* handleClient(void* clientSocket);
     /**
      * assigning a number for each client
      * @param clientSocket
      * @param numPlayer
      */
     void assignSymbol(int clientSocket, int numPlayer);
+
+public:
+    bool isQuit() const;
+
+    void setQuit(bool quit);
+
+    int getServerSocket() const;
+
+    void setServerSocket(int serverSocket);
+
+    int getPort() const;
+
+    void setPort(int port);
+
+private:
     /**
      * checking if the game is ended
      * @param m
@@ -51,7 +64,12 @@ private:
      */
     bool isWin(coordinate m);
 
-    static  void *connect (void* args);
+    static void* quitStatus(void*);
+
+
+    static void* getClients(void *);
+
+    pthread_t clientConnectingThread;
 };
 
-#endif //SERVER_SERVER_H
+#endif //ROOT_SERVER_H

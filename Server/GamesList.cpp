@@ -3,8 +3,8 @@
 //
 
 #include "GamesList.h"
-#include "algorithm"
 #include <iostream>
+pthread_mutex_t gamesList_mutex;
 
 /* Null, because instance will be initialized on demand. */
 
@@ -21,9 +21,10 @@ GamesList* GamesList::getGamesList()
     return gamesList;
 }
 
-GamesList::GamesList() = default;
+GamesList::GamesList() {};
 
 void GamesList::addGame(string name, int socket) {
+    gameInfo game;
     vector<gameInfo>::iterator it;
     gameInfo gi;
     for (it = games.begin(); it != games.end(); ++it) {
@@ -33,10 +34,15 @@ void GamesList::addGame(string name, int socket) {
             return;
         }
     }
-    gameInfo game{name, socket, 0, 1};
+    game.game = name;
+    game.player1sock = socket;
+    game.player2sock = 0;
+    game.players = 1;
 
-    //add mutex!!!!!
+    //add mutex to avoid messes in game list (games being added\joined\erased simultaneously)
+    pthread_mutex_lock(&gamesList_mutex);
     games.push_back(game);
+    pthread_mutex_unlock(&gamesList_mutex);
 }
 
 
@@ -58,14 +64,20 @@ void GamesList::removeSocket(int socket) {
 
 //make sure bug-free
 int GamesList::removeGame(string name) {
+    int i = 0;
     vector<gameInfo>::iterator it;
     gameInfo gi;
     for (it = games.begin(); it != games.end(); ++it) {
+
         gi = *it;
         if (gi.game == name) {
-            games.erase(remove(games.begin(), games.end(), gi), games.end());
+            //add mutex to avoid messes in game list (games being added\joined\erased simultaneously)
+            pthread_mutex_lock(&gamesList_mutex);
+            games.erase (games.begin()+i);
+            pthread_mutex_unlock(&gamesList_mutex);
             return 1;
         }
+        i++;
     }
     return 0;
 }
@@ -102,4 +114,19 @@ int GamesList::getOpponent(int socket) {
 
     //finished iterating over games, and players socket was not found participating in any game
     return 0;
+}
+
+void GamesList::getAllSockets(vector<int> &sockets) {
+    vector<gameInfo>::iterator it;
+    gameInfo gi;
+    for (it = games.begin(); it != games.end(); ++it) {
+        gi = *it;
+        if (gi.player1sock != 0) {
+            sockets.push_back(gi.player1sock);
+        }
+        if (gi.player2sock != 0) {
+            sockets.push_back(gi.player2sock);
+        }
+    }
+
 }

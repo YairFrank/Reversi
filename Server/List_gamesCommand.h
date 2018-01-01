@@ -11,7 +11,7 @@
 class List_gamesCommand: public Command {
 public:
     List_gamesCommand();
-    virtual void execute(clientData *cd, int sid);
+    virtual void execute(vector <string> cd, int sid);
 };
 
 

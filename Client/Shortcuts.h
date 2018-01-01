@@ -7,6 +7,8 @@
 #ifndef SHORTCUTS_H_
 #define SHORTCUTS_H_
 #include <vector>
+#include <string>
+
 using namespace std;
 
 class Shortcuts {
@@ -17,7 +19,7 @@ public:
 		typedef struct coordinate {int x; int y;} coordinate;
 		typedef struct aiOption {coordinate move; int score;} aiOption;
 		typedef vector<Shortcuts::coordinate> coordVec;
-
+	    typedef struct PlayMessage {string str; int x; int y;} PlayMessage;
 };
 
 

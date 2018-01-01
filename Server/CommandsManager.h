@@ -13,16 +13,16 @@
 class CommandsManager {
 
 public:
-
-    CommandsManager();
-    ~CommandsManager();
-    void executeCommand(string command, clientData *cd, int sid);
+    static CommandsManager *getInstance();
+    void executeCommand(string command, vector <string> cd, int sid=0);
 
 private:
-
+    CommandsManager();
+    CommandsManager(const CommandsManager &);
+    ~CommandsManager();
     map<string, Command *> commandsMap;
-
-
+    static CommandsManager *instance;
+    static pthread_mutex_t lock;
 };
 
 

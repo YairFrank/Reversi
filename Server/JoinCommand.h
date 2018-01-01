@@ -10,7 +10,14 @@
 class JoinCommand: public Command {
 public:
     JoinCommand();
-    virtual void execute(clientData *cd, int sid);
+    virtual void execute(vector <string> cd, int sid);
+private:
+
+    static void* runGame(void* socketsStruct);
+    void assignSymbol(int clientSocket, int numPlayer) const;
+    coordinate passMove(int clientSocket, coordinate oppMove, bool &firstMove);
+    bool isWin(coordinate m);
+
 };
 
 #endif //ROOT_JOINCOMMAND_H

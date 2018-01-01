@@ -32,6 +32,11 @@ public:
     /* Static access method. */
     static GamesList* getGamesList();
 
+    /**
+     * @return a list of all sockets currently participating in games (even if not active)
+     */
+    void getAllSockets(vector<int> &sockets);
+
     void addGame(string name, int socket);
 
     /**

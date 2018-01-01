@@ -27,7 +27,7 @@ public:
      */
     void playTurn
             (Shortcuts::coordinate &c, Shortcuts::coordVec &v,
-             Board &b, GameLogic &gl, char &current, char &other, Client &cl, bool &firstMove);
+             Board &b, GameLogic &gl, char &current, char &other, Client &cl, bool &firstMove, Shortcuts::PlayMessage &p);
     ~HumanPlayer();
 };
 #endif //REVERSI_HUMANPLAYER_H

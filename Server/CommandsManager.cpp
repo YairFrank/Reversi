@@ -4,9 +4,7 @@
 
 #include"CommandsManager.h"
 #include "List_gamesCommand.h"
-#include "CloseCommand.h"
 #include "StartCommand.h"
-#include "PlayCommand.h"
 #include "JoinCommand.h"
 #include "GamesList.h"
 
@@ -17,15 +15,23 @@ using namespace std;
 CommandsManager::CommandsManager() {
     commandsMap["start"] = new StartCommand();
     commandsMap["list_games"] = new List_gamesCommand();
-    commandsMap["play"] = new PlayCommand();
     commandsMap["join"] = new JoinCommand();
-    commandsMap["close"] = new CloseCommand();
-    GamesList* gamesList = GamesList::getGamesList();
-
 }
 
+CommandsManager* CommandsManager::instance = 0;
+pthread_mutex_t CommandsManager::lock;
+CommandsManager* CommandsManager::getInstance() {
+    if (instance == 0) {
+        pthread_mutex_lock(&lock);
+        if (instance == 0) {
+            instance = new CommandsManager();
+        }
+        pthread_mutex_unlock(&lock);
+    }
+    return instance;
+}
 
-void CommandsManager::executeCommand(string command, clientData *cd, int sid) {
+void CommandsManager::executeCommand(string command, vector <string> cd, int sid) {
     Command *commandObj = commandsMap[command];
     commandObj->execute(cd, sid);
 }

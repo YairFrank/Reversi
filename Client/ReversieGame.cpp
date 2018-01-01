@@ -65,7 +65,8 @@ void ReversieGame::play() {
                 v = p2v;
             }
             char sign=current->getSign();
-            current->playTurn(c, v, b, gl, sign, other, cl, firstMove);
+            Shortcuts::PlayMessage play;
+            current->playTurn(c, v, b, gl, sign, other, cl, firstMove, play);
             p1v.clear();
             p2v.clear();
             board=b.getBoard();

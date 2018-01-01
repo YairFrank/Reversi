@@ -30,8 +30,8 @@ public:
      * @param client
      * @param firstMove
      */
-    void playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v,
-                  Board &b, GameLogic &gl, char &current, char &other, Client &client, bool &firstMove);
+    void playTurn(Shortcuts::coordinate & coord, Shortcuts::coordVec &v,
+                  Board &b, GameLogic &gl, char &current, char &other, Client &client, bool &firstMove, Shortcuts::PlayMessage &p);
 };
 
 

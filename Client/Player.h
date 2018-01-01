@@ -13,7 +13,7 @@ public:
     Player();
     Player(char x);
     virtual void playTurn(Shortcuts::coordinate &c, Shortcuts::coordVec &v,
-                          Board &b, GameLogic &gl, char &current, char &other, Client &cl, bool &firstMove) =0;
+                          Board &b, GameLogic &gl, char &current, char &other, Client &cl, bool &firstMove, Shortcuts::PlayMessage &p) =0;
     void setHasMoves(bool x);
     bool getHasMoves() const;
     char getSign() const;

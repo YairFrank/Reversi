@@ -9,23 +9,22 @@ RemotePlayer::RemotePlayer(): Player (){}
 RemotePlayer::RemotePlayer(char x): Player (x){}
 
 void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v,
-                            Board &b, GameLogic &gl, char &current, char &other, Client &client, bool &firstMove) {
+                            Board &b, GameLogic &gl, char &current, char &other, Client &client, bool &firstMove, Shortcuts::PlayMessage &play) {
     int flag = 0;
     int x, y;
-    char c;
+    char c, open, close;
     Shortcuts::matrix board;
     Shortcuts::coordVec flips;
     Shortcuts::coordinate f;
     Shortcuts::coordVec::iterator it;
     board = b.getBoard();
-
     if ((current == 'O' && !firstMove) || current == 'X') {
         b.print();
         if (!firstMove) {
-            if (coord.x == -1)
+            if (play.x == -1)
                 cout << "No move for " << other << endl;
             else
-                cout << other << " played (" << coord.x << ',' << coord.y << ')' << endl;
+                cout << other << " played (" << play.x << ',' << play.y << ')' << endl;
         }
         if (gl.hasValidMoves(current, v, board)) {
             if (!v.empty()) {
@@ -46,23 +45,24 @@ void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v
                         cout << endl;
                         cout << "Please enter your move row,column:" << endl;
                     }
-                    cin >> x >> c >> y;
+                    cin >> play.str >> open >> play.x >> close >> open >> play.y >> close;
                     //check for correct user input
-                    while (cin.fail() || c != ',') {
+                    while (cin.fail() || open != '<' || close != '>') {
                         cout << "Error, please enter move in requested format" << endl;
                         cin.clear();
                         cin.ignore(256, '\n');
-                        cin >> x >> c >> y;
+                        cin >> play.str >> open >> play.x >> close >> open >> play.y >> close;
                     }
-                    while (x < 1 || x > 8 || y < 1 || y > 8) {
+                    while (play.x < 1 || play.x > 8 || play.y < 1 || play.y > 8) {
                         cout << "coordinates out of bounds. please submit your move again" << endl;
                         cin.clear();
                         cin.ignore(256, '\n');
-                        cin >> x >> c >> y;
+                        cin >> play.str >> open >> play.x >> close >> open >> play.y >> close;
                     }
-                    coord.x = x;
-                    coord.y = y;
                     //make sure valid move was entered.
+                    Shortcuts::coordinate coord{};
+                    coord.x=play.x;
+                    coord.y=play.y;
                     if (!Player::checkValidInput(coord, v)) {
                         cout << "please enter valid move" << endl;
                         flag = 1;
@@ -72,12 +72,12 @@ void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v
                     }
                 }
                 try {
-                    client.sendCoord(coord);
+                    client.sendMessage(play);
                 } catch (const char *msg) {
                     cout << "Failed to send coordinates to server. Reason: " << msg << endl;
                 }
-                b.enterMove(current, coord.x, coord.y);
-                gl.flipTokens(current, coord.x - 1, coord.y - 1, board, flips);
+                b.enterMove(current, play.x, play.y);
+                gl.flipTokens(current, play.x - 1, play.y - 1, board, flips);
                 for (it = flips.begin(); it != flips.end(); it++) {
                     f = *it;
                     b.enterMove(current, f.x + 1, f.y + 1);
@@ -89,34 +89,34 @@ void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v
                 board = b.getBoard();
             }
         } else {
-            if (coord.x == -1) {
-                coord.x = -2;
-                coord.y = -2;
+            if (play.x == -1) {
+                play.x = -2;
+                play.y = -2;
             } else {
                 //player had no moves available
                 cout << "No possible moves for " << current
                      << ". Play passes back to the other player" << endl;
                 try {
-                    coord.x = -1;
-                    coord.y = -1;
-                    client.sendCoord(coord);
+                    play.x = -1;
+                    play.y = -1;
+                    client.sendMessage(play);
                 } catch (const char *msg) {
                     cout << "Failed to send coordinates to server. Reason: " << msg << endl;
                 }
             }
         }
     }
-    if(coord.x!=-2){
+    if(play.x!=-2){
         try {
-            client.getCoord(coord);
+            client.getMessage(play);
         } catch (const char *msg) {
             cout << "Failed to get coordinates from server. Reason: " << msg << endl;
         }
-        if (coord.x == -1)
+        if (play.x == -1)
             return;
         else {
-            b.enterMove(other, coord.x, coord.y);
-            gl.flipTokens(other, coord.x - 1, coord.y - 1, board, flips);
+            b.enterMove(other, play.x, play.y);
+            gl.flipTokens(other, play.x - 1, play.y - 1, board, flips);
             for (it = flips.begin(); it != flips.end(); it++) {
                 f = *it;
                 b.enterMove(other, f.x + 1, f.y + 1);

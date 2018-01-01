@@ -11,7 +11,7 @@ AIPlayer::AIPlayer(char x): Player(x){}
 
 
 void AIPlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v,
-                        Board &board, GameLogic &gamel, char &current, char &other, Client &cl, bool &firstMove) {
+                        Board &board, GameLogic &gamel, char &current, char &other, Client &cl, bool &firstMove, Shortcuts::PlayMessage &p) {
     GameLogic gl;
     Board dup;
     Shortcuts::coordVec flips, aiMoves = v;

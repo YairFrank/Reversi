@@ -7,11 +7,12 @@
 #include "GamesList.h"
 #include "CommandsManager.h"
 
-void StartCommand::execute(clientData *cd, int sid) {
+void StartCommand::execute(vector <string> cd, int sid) {
 
     //args holds all
     GamesList* games = GamesList::getGamesList();
-    games->addGame(cd->name,sid);
+
+    games->addGame(cd[0],sid);
 
     //close the thread!!
 }
