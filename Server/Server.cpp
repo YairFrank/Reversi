@@ -72,7 +72,7 @@ void* Server::getClients(void* serverSocket) {
     vector<int>::iterator itn;
     int clientsocket;
     pthread_t thread;
-    int i = 0;
+    int i = 1;
     vector<int> sockets;
 
     //create socket
@@ -102,6 +102,7 @@ void* Server::getClients(void* serverSocket) {
             cout << "Error: unable to create thread, " << rc << endl;
             exit(-1);
         }
+        i++;
     }
 
     //server needs to close all threads connected to clients and exit.

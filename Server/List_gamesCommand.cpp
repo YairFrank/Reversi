@@ -9,5 +9,5 @@ List_gamesCommand::List_gamesCommand() {}
 
 void List_gamesCommand::execute(vector <string> cd, int sid) {
     GamesList* games = GamesList::getGamesList();
-    games->display();
+    games->display(sid);
 }

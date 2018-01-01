@@ -56,7 +56,7 @@ public:
      */
     int removeGame(string name);
 
-    void display();
+    void display(int sid);
 
     int getOpponent(int socket);
 

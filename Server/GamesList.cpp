@@ -4,6 +4,8 @@
 
 #include "GamesList.h"
 #include <iostream>
+#include <unistd.h>
+
 pthread_mutex_t gamesList_mutex;
 
 /* Null, because instance will be initialized on demand. */
@@ -82,20 +84,32 @@ int GamesList::removeGame(string name) {
     return 0;
 }
 
-void GamesList::display() {
+void GamesList::display(int sid) {
     vector<gameInfo>::iterator it;
+    vector<string> list;
     gameInfo gi;
     int numGames = 0;
-    cout << "available games: ";
     for (it = games.begin(); it != games.end(); ++it) {
         gi = *it;
         if (gi.players == 1) {
             numGames++;
-            cout <<gi.game << ", ";
+            list.push_back(gi.game);
         }
     }
+    int n=write(sid, &numGames, sizeof(numGames));
+    if (n == -1)
+        throw runtime_error ("error in writing my man");
     if (numGames == 0) {
-        cout << "none";
+        string str="none";
+        int n=write(sid, &str, sizeof(str));
+        if (n == -1)
+            throw runtime_error ("error in writing my man");
+    }else{
+        for(int i=0; i<numGames;i++){
+            int n=write(sid, &list[i], sizeof(list[i]));
+            if (n == -1)
+                throw runtime_error ("error in writing my man");
+        }
     }
     cout << endl;
 }

@@ -4,6 +4,7 @@
 
 #include <unistd.h>
 #include <fstream>
+#include <cstring>
 #include "RemoteGame.h"
 #include "RemotePlayer.h"
 
@@ -50,10 +51,26 @@ void RemoteGame::play() {
         //cin>>message.str1>>open>>message.str2>>close;
         cin>>str;
     }
-    //char cha[20]={'v','d','s','g'};
+    
     n=write(cl.getSocket(), &str , sizeof(str));
     if (n == -1)
         throw runtime_error ("server is closed, dude");
+    char key[MAX]="list_games";
+    if(strcmp(key, str) != 0){
+        int numGames;
+        string game;
+        n=read(cl.getSocket(), &numGames, sizeof(numGames));
+        cout<<numGames<<endl;
+        if (n == -1)
+            throw runtime_error ("server is closed, dude");
+        cout<<"available games: ";
+        for (int i=0; i<numGames;i++){
+            n=read(cl.getSocket(), &game, sizeof(game));
+            if (n == -1)
+                throw runtime_error ("server is closed, dude");
+            cout<<game<<", ";
+        }
+    }
     //get information from server that client should wait for another player to connect/player symbol
     n=read(cl.getSocket(), &waitmsg, sizeof(waitmsg));
     if (n == -1)
