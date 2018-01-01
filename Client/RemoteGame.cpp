@@ -19,7 +19,7 @@ RemoteGame::RemoteGame() : b(Board()), gl(GameLogic()) {
 
 void RemoteGame::play() {
     char char_array [MAX];
-    string input;
+    string input, buffer;
     int numplay, waitmsg, n, num;
     char current, other;
     bool firstMove=true;
@@ -51,35 +51,40 @@ void RemoteGame::play() {
 
     cin.ignore();
     getline(cin,input);
-    strcpy(char_array,input.c_str());
-
-    //check valid input
-    string str(char_array);
-    iss.str(str);
+    buffer = input;
+    iss.str(buffer);
     string command;
     iss >> command;
-    if (command == "list_games") {
-        cout<<"yay!"<<endl;
-    }
-
-
-    //check for correct user input
-
     while (cin.fail()|| (command != "start" && command != "join" && command != "list_games")) {
         cout << "Error, please enter valid option" << endl;
         cin.clear();
         cin.ignore(256, '\n');
         getline(cin,input);
-        strcpy(char_array,input.c_str());
-
-        //check valid input
-        string str(commandStr);
-        iss.str(str);
+        buffer = input;
+        iss.str(buffer);
         string command;
         iss >> command;
     }
-    cout << "sending string" << str <<endl;
-    n=write(cl.getSocket(), &str , sizeof(str));
+    
+    
+    
+    strcpy(char_array,input.c_str());
+
+//    //check valid input
+//    string str(char_array);
+//    iss.str(str);
+//    string command;
+//    iss >> command;
+//    if (command == "list_games") {
+//        cout<<"yay!"<<endl;
+//    }
+
+
+    //check for correct user input
+
+    
+    cout << "sending string" << char_array <<endl;
+    n=write(cl.getSocket(), &char_array , sizeof(char_array));
     if (n == -1)
         throw runtime_error ("server is closed, dude");
     //get information from server that client should wait for another player to connect/player symbol
