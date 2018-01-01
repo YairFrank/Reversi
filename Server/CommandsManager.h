@@ -14,7 +14,7 @@ class CommandsManager {
 
 public:
     static CommandsManager *getInstance();
-    void executeCommand(string command, vector <string> cd, int sid=0);
+    void executeCommand(string command, vector <string> args, int sid=0);
 
 private:
     CommandsManager();
