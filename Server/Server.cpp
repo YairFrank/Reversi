@@ -65,8 +65,8 @@ void Server::start() {
 }
 
 
-void* Server::getClients(void* classPointer) {
-    long serverSocket = (long)classPointer;
+void* Server::getClients(void* serverSocket) {
+    long serverSocketId = (long)serverSocket;
     vector<pthread_t> threads;
     vector<pthread_t>::iterator it;
     vector<int>::iterator itn;
@@ -90,14 +90,14 @@ void* Server::getClients(void* classPointer) {
     while (true) {
         cout << "Waiting for client connections..." << endl;
         //accept a players connection
-        int playerSocket = accept(serverSocket, (struct sockaddr *) &playerAddress, &playerAddressLen);
-        cout << "Client number" << i << " connected" << endl;
+        int playerSocket = accept(serverSocketId, (struct sockaddr *) &playerAddress, &playerAddressLen);
+        cout << "Client number " << i << " connected" << endl;
         if (playerSocket == -1) {
             throw "Error on accept";
         }
         threads.push_back(thread);
         cout << "In getClients: creating thread " << i << endl;
-        int rc = pthread_create(&threads[i], NULL, &handleClient, (void *) &playerSocket);
+        int rc = pthread_create(&threads[i], NULL, &handleClient, (void *) playerSocket);
         if (rc) {
             cout << "Error: unable to create thread, " << rc << endl;
             exit(-1);
@@ -127,6 +127,9 @@ void* Server::handleClient(void* clientSocket) {
     //clientData cd;
     long sid = (long) clientSocket;
     char commandStr [MAX_COMMAND_LEN];
+    vector<string> args;
+    vector<string>::iterator it;
+    string s;
     //CommandsManager cm;
     //create a command manager
     //cm = new CommandsManager();
@@ -143,12 +146,17 @@ void* Server::handleClient(void* clientSocket) {
     istringstream iss(str);
     string command;
     iss >> command;
-    vector<string> args;
-    while (iss) { string arg;
+    while (iss) {
+        string arg;
         iss >> arg;
         args.push_back(arg);
     }
+    for (it = args.begin(); it != args.end(); ++it) {
+        s = *it;
+        cout << "arg: "<< s<<endl;
+    }
     CommandsManager::getInstance()->executeCommand(command, args, sid);
+    args.clear();
     return NULL;
 }
 

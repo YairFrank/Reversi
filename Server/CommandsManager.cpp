@@ -2,11 +2,13 @@
 // Created by yair on 24/12/17.
 //
 
+#include <iostream>
 #include"CommandsManager.h"
 #include "List_gamesCommand.h"
 #include "StartCommand.h"
 #include "JoinCommand.h"
 #include "GamesList.h"
+#include<iostream>
 
 
 using namespace std;
@@ -33,6 +35,7 @@ CommandsManager* CommandsManager::getInstance() {
 
 void CommandsManager::executeCommand(string command, vector <string> cd, int sid) {
     Command *commandObj = commandsMap[command];
+
     commandObj->execute(cd, sid);
 }
 

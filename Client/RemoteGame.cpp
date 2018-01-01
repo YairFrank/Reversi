@@ -37,9 +37,9 @@ void RemoteGame::play() {
     Message message;
     char str [MAX];
     cout<<"Choose one of the options below:"<<endl<<endl<<
-        "to start a new game, please type - start<here type a unique name for the game>"<<endl<<endl<<
+        "to start a new game, please type - start my_game"<<endl<<endl<<
         "to see existing games, please type - list_games" <<endl<<endl<<
-        "to join an existing game from the list, please type - join <name of the chosen game>"<<endl;
+        "to join an existing game from the list, please type - join name_of_game_to_join"<<endl;
     cin>>str;
     //cin>>message.str1>>open>>message.str2>>close;
     //check for correct user input
@@ -50,8 +50,8 @@ void RemoteGame::play() {
         //cin>>message.str1>>open>>message.str2>>close;
         cin>>str;
     }
-    char cha[20]={'v','d','s','g'};
-    n=write(cl.getSocket(), &cha , sizeof(cha));
+    //char cha[20]={'v','d','s','g'};
+    n=write(cl.getSocket(), &str , sizeof(str));
     if (n == -1)
         throw runtime_error ("server is closed, dude");
     //get information from server that client should wait for another player to connect/player symbol

@@ -6,12 +6,12 @@
 #include "StartCommand.h"
 #include "GamesList.h"
 #include "CommandsManager.h"
-
+#include<iostream>
 void StartCommand::execute(vector <string> cd, int sid) {
 
     //args holds all
     GamesList* games = GamesList::getGamesList();
-
+    cout<<"adding game " << cd[0] << endl;
     games->addGame(cd[0],sid);
 
     //close the thread!!
