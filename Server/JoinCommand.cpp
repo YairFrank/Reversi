@@ -68,6 +68,7 @@ void* JoinCommand::runGame(void *gd) {
     player1Socket = data->player1Socket;
     player2Socket = data->player2socket;
     JoinCommand* jc = data->myClass;
+    cout<<"gdgsaegresrg";
     n=write(data->player1Socket, &num, sizeof(num));
     if (n == -1) {
         cout << "error writing to socket"<< endl;
