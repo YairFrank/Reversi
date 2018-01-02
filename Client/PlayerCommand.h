@@ -13,8 +13,8 @@ using namespace std;
 class PlayerCommand {
 public:
 
-    virtual void execute(vector <string> cd, int sid = 0) =0;
+    virtual void execute(char args[], int sid = 0) =0;
 
     virtual~PlayerCommand() {}
-}
+};
 #endif //ROOT_PLAYERCOMMAND_H

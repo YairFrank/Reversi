@@ -6,7 +6,9 @@
 #define ROOT_JOINGAMECOMMAND_H
 
 
-class JoinGameCommand {
+#include "PlayerCommand.h"
+
+class JoinGameCommand : public PlayerCommand {
 public:
 
     JoinGameCommand();

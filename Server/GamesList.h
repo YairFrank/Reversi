@@ -37,7 +37,7 @@ public:
      */
     void getAllSockets(vector<int> &sockets);
 
-    void addGame(string name, int socket);
+    int addGame(string name, int socket);
 
     /**
      * joins a player to a game. Discriminates if there was already a player connected or not.
@@ -56,7 +56,7 @@ public:
      */
     int removeGame(string name);
 
-    void display(int sid);
+    vector<string> getAvailableGames();
 
     int getOpponent(int socket);
 

@@ -8,7 +8,6 @@
 #include<vector>
 #include<string>
 #include "GamesList.h"
-//typedef struct clientData {string command ; string name; int x; int y;} clientData;
 typedef struct coordinate {int x; int y;} coordinate;
 using namespace std;
 

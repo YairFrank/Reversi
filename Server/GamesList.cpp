@@ -25,15 +25,15 @@ GamesList* GamesList::getGamesList()
 
 GamesList::GamesList() {};
 
-void GamesList::addGame(string name, int socket) {
+int GamesList::addGame(string name, int socket) {
     gameInfo game;
     vector<gameInfo>::iterator it;
     gameInfo gi;
     for (it = games.begin(); it != games.end(); ++it) {
         gi = *it;
         if (name == gi.game) {
-            cout << "error, this game already exists" << endl;
-            return;
+            //the game already exists
+            return 0;
         }
     }
     game.game = name;
@@ -41,10 +41,7 @@ void GamesList::addGame(string name, int socket) {
     game.player2sock = 0;
     game.players = 1;
 
-    //add mutex to avoid messes in game list (games being added\joined\erased simultaneously)
-    pthread_mutex_lock(&gamesList_mutex);
-    games.push_back(game);
-    pthread_mutex_unlock(&gamesList_mutex);
+    return 1;
 }
 
 
@@ -73,10 +70,7 @@ int GamesList::removeGame(string name) {
 
         gi = *it;
         if (gi.game == name) {
-            //add mutex to avoid messes in game list (games being added\joined\erased simultaneously)
-            pthread_mutex_lock(&gamesList_mutex);
             games.erase (games.begin()+i);
-            pthread_mutex_unlock(&gamesList_mutex);
             return 1;
         }
         i++;
@@ -84,7 +78,7 @@ int GamesList::removeGame(string name) {
     return 0;
 }
 
-void GamesList::display(int sid) {
+vector<string> GamesList::getAvailableGames() {
     vector<gameInfo>::iterator it;
     vector<string> list;
     gameInfo gi;
@@ -97,23 +91,8 @@ void GamesList::display(int sid) {
             list.push_back(gi.game);
         }
     }
-    cout<<endl<<list[0]<<endl;
-    int n=write(sid, &numGames, sizeof(numGames));
-    if (n == -1)
-        throw runtime_error ("error in writing my man");
-    if (numGames == 0) {
-        string str="none";
-        int n=write(sid, &str, sizeof(str));
-        if (n == -1)
-            throw runtime_error ("error in writing my man");
-    }else{
-        for(int i=0; i<numGames;i++){
-            int n=write(sid, list[i].c_str(), list[i].length());
-            if (n == -1)
-                throw runtime_error ("error in writing my man");
-        }
-    }
-    cout << endl;
+    return list;
+
 }
 
 int GamesList::getOpponent(int socket) {
