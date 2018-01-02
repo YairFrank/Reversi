@@ -14,7 +14,7 @@ public:
     StartGameCommand();
 
 
-    virtual void execute(vector <string> cd, int sid);
+    virtual void execute(char char_array [], int sid);
 };
 
 
