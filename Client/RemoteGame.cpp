@@ -48,7 +48,6 @@ void RemoteGame::play() {
         "to see existing games, please type - list_games" <<endl<<endl<<
         "to join an existing game from the list, please type - join name_of_game_to_join"<<endl;
 
-
     cin.ignore();
     getline(cin,input);
     buffer = input;
@@ -65,9 +64,9 @@ void RemoteGame::play() {
         string command;
         iss >> command;
     }
-    
-    
-    
+
+
+
     strcpy(char_array,input.c_str());
 
 //    //check valid input
@@ -82,16 +81,75 @@ void RemoteGame::play() {
 
     //check for correct user input
 
-    
+
     cout << "sending string" << char_array <<endl;
+
+    //Sending the command
+
     n=write(cl.getSocket(), &char_array , sizeof(char_array));
     if (n == -1)
         throw runtime_error ("server is closed, dude");
+
+
+
+    if(command=="list_games"){
+        int numGames;
+        char str [MAX];
+        n=read(cl.getSocket(), &numGames, sizeof(numGames));
+        if (n == -1)
+            throw runtime_error ("server is closed, dude");
+
+        for(int i=0;i<numGames;i++){
+            n=read(cl.getSocket(), &str, sizeof(str));
+            if (n == -1)
+                throw runtime_error ("server is closed, dude");
+            cout<<str<<", ";
+        }
+        cout<<endl;
+        cin.ignore();
+        getline(cin,input);
+        buffer = input;
+        iss.str(buffer);
+        string command;
+        iss >> command;
+        while (cin.fail()|| (command != "start" && command != "join" && command != "list_games")) {
+            cout << "Error, please enter valid option" << endl;
+            cin.clear();
+            cin.ignore(256, '\n');
+            getline(cin,input);
+            buffer = input;
+            iss.str(buffer);
+            string command;
+            iss >> command;
+        }
+        strcpy(char_array,input.c_str());
+        cout << "sending string" << char_array <<endl;
+        n=write(cl.getSocket(), &char_array , sizeof(char_array));
+        if (n == -1)
+            throw runtime_error ("server is closed, dude");
+    }
+
+    if(command=="start"){
+        cout << "waiting for another player to connect..." << endl;
+        numplay=1;
+        //get information from server about player's symbol
+        n=read(cl.getSocket(), &num, sizeof(num));
+        if (n == -1)
+            throw runtime_error ("server is closed, dude");
+    }
+    if (command=="join"){
+        numplay=2;
+    }
+
+
+    //waitmsg=numGames;
+
+
     //get information from server that client should wait for another player to connect/player symbol
-    n=read(cl.getSocket(), &waitmsg, sizeof(waitmsg));
-    if (n == -1)
-        throw runtime_error ("server is closed, dude");
-    if (waitmsg == 3) {
+    //n=read(cl.getSocket(), &waitmsg, sizeof(waitmsg));
+    //if (n == -1)
+    //    throw runtime_error ("server is closed, dude");
+    /*if (waitmsg == -1) {
         cout << "waiting for another player to connect..." << endl;
         //get information from server about player's symbol
         n=read(cl.getSocket(), &num, sizeof(num));
@@ -100,11 +158,12 @@ void RemoteGame::play() {
     }
 
     //in case current client was not first to connect.
-    if (waitmsg != 3)
-        numplay = waitmsg;
+    if (waitmsg == -1)
+        numplay = 1;
     else {
-        numplay=num;
-    }
+        numplay=2;
+    }*/
+    
 
 
     if (numplay==1){

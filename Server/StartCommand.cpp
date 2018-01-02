@@ -7,6 +7,8 @@
 #include "GamesList.h"
 #include "CommandsManager.h"
 #include<iostream>
+#include <unistd.h>
+
 void StartCommand::execute(vector <string> cd, int sid) {
 
     //args holds all

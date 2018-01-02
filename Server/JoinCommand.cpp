@@ -62,15 +62,18 @@ void* JoinCommand::runGame(void *gd) {
     er.x = 0;
     er.y = 0;
     bool firstMove = true;
-
+    int num=1;
     gameData *data = (gameData*)gd;
     name = data->name;
     player1Socket = data->player1Socket;
     player2Socket = data->player2socket;
     JoinCommand* jc = data->myClass;
-
-    jc->assignSymbol(player1Socket, 1);
-    jc->assignSymbol(player2Socket, 2);
+    n=write(data->player1Socket, &num, sizeof(num));
+    if (n == -1) {
+        cout << "error writing to socket"<< endl;
+    }
+    //jc->assignSymbol(player1Socket, 1);
+    //jc->assignSymbol(player2Socket, 2);
 
 
 

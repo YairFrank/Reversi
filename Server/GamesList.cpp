@@ -91,11 +91,13 @@ void GamesList::display(int sid) {
     int numGames = 0;
     for (it = games.begin(); it != games.end(); ++it) {
         gi = *it;
+        cout<<gi.game;
         if (gi.players == 1) {
             numGames++;
             list.push_back(gi.game);
         }
     }
+    cout<<endl<<list[0]<<endl;
     int n=write(sid, &numGames, sizeof(numGames));
     if (n == -1)
         throw runtime_error ("error in writing my man");
@@ -106,7 +108,7 @@ void GamesList::display(int sid) {
             throw runtime_error ("error in writing my man");
     }else{
         for(int i=0; i<numGames;i++){
-            int n=write(sid, &list[i], sizeof(list[i]));
+            int n=write(sid, list[i].c_str(), list[i].length());
             if (n == -1)
                 throw runtime_error ("error in writing my man");
         }
