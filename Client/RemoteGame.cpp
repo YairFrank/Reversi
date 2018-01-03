@@ -6,16 +6,16 @@
 #include <fstream>
 #include "RemoteGame.h"
 #include "RemotePlayer.h"
-#include "CommandManager.h"
 #include <iostream>
 #include <string.h>
 #include <string>
 #include <sstream>
+#include <cstdlib>
 
 using namespace std;
 #define MAXLEN 50
 
-RemoteGame::RemoteGame() : b(Board(4)), gl(GameLogic()) {
+RemoteGame::RemoteGame() : b(Board()), gl(GameLogic()) {
 }
 
 void RemoteGame::initialize() {
@@ -35,13 +35,6 @@ void RemoteGame::initialize() {
     inFile.close();
     const char *ip = IP.c_str();
     Client client(ip, port);
-    cl = client;
-    try {
-        cl.connectToServer();
-    }
-    catch (const char *msg) {
-        cout << "Failed to connect to server. Reason:" << msg << endl;
-    }
 
     while (true) {
         cl = client;
@@ -49,7 +42,8 @@ void RemoteGame::initialize() {
             cl.connectToServer();
         }
         catch (const char *msg) {
-            cout << "Failed to connect to server. Reason:" << msg << endl;
+            cout << "server closed, sorry";
+            exit(0);
         }
         cout << "Choose one of the options below:" << endl << endl <<
              "to start a new game, please type - start my_game" << endl << endl <<
@@ -60,13 +54,13 @@ void RemoteGame::initialize() {
             cin.ignore();
             first = false;
         }
+
+        //get command from client
         cin.clear();
         getline(cin, input);
-        cout<<"input is "<< input <<endl;
         istringstream iss(input);
         string command;
         iss >> command;
-        cout<<"command is "<< command <<endl;
         //if client wants to exit game
         if (command == "exit") {
             cout << "bye :)";
@@ -76,7 +70,6 @@ void RemoteGame::initialize() {
         while (cin.fail() || (command != "start" && command != "join" && command != "list_games")) {
             cout << "Error, please enter valid option" << endl;
             cin.clear();
-            //cin.ignore(256,'\n');
             getline(cin, input);
             iss.str(input);
             iss >> command;
@@ -85,32 +78,36 @@ void RemoteGame::initialize() {
         //write command to server
         strcpy(char_array, input.c_str());
         n=write(cl.getSocket(), &char_array , sizeof(char_array));
-        if (n == -1) {
+        if (n == -1 || n == 0) {
             cout << "server closed, sorry";
             exit(0);
         }
 
 
-        //CommandManager::getInstance()->executeCommand(command, char_array, cl.getSocket());
         if (command == "start") {
             //get information from server if command succeeded - if not, we will get 0 from server
             n=read(cl.getSocket(), &status, sizeof(status));
-            if (n == -1) {
+            if (n == -1 || n == 0) {
                 cout << "server closed, sorry";
                 exit(0);
             }
+
             if (status == 0) {
                 cout << "start failed, game already exists"<< endl;
                 continue;
             }
+
+            //otherwise, game was initialized. Now wait for another player to connect before starting to play
             cout <<"game initialized, waiting for another player to connect..."<<endl;
             RemoteGame::play();
+
         } else if (command == "join"){
+
+            //necessary for cleaing console before reading next command from client
             played = true;
+            //start playing a previously initilized game
             RemoteGame::play();
         } else {
-            cout<<"list games"<<endl;
-            numCommand++;
             //player asked to get a list of games
             RemoteGame::receiveList();
         }
@@ -120,16 +117,20 @@ void RemoteGame::initialize() {
 
 
 void RemoteGame::play() {
-    int numplay, waitmsg, n, num;
+    int numplay, n;
     char current, other;
     bool firstMove=true;
     RemotePlayer* p;
+    Shortcuts::matrix board;
+    Shortcuts::coordVec pv;
+    Shortcuts::coordinate c;
+    char winner;
 
-    //get information from server that client should wait for another player to connect/player symbol
+    //get information from server that client about player symbol
     n=read(cl.getSocket(), &numplay, sizeof(numplay));
-    if (n == -1) {
+    if (n == -1 || n == 0) {
         cout << "server closed, sorry";
-        return;
+        exit(0);
     }
 
     if (numplay == 0) {
@@ -151,12 +152,9 @@ void RemoteGame::play() {
         cout<<"You are O"<<endl;
         cout << "Waiting for other player..." << endl;
     }
-    Shortcuts::matrix board;
-    Shortcuts::coordVec pv;
-    Shortcuts::coordinate c;
-    //Shortcuts::PlayMessage play;
-    char winner;
-    //if exits while loop - neither players have moves. Game over.
+
+
+    //game logic from previous code planning left unchanged. if exits while loop - neither players have moves. Game over.
     while (b.hasFreeSpaces()&&c.x!=-2)
         p->playTurn(c, pv, b, gl, current, other, cl, firstMove);
     // neither player has valid moves available. Game over.
@@ -172,7 +170,8 @@ void RemoteGame::play() {
         c.y=-3;
         cl.sendCoord(c);
     }catch (const char *msg) {
-        cout << "Failed to send coordinates to server. Reason: " << msg << endl;
+        cout << "server closed, sorry";
+        exit(0);
     }
     delete p;
 }
@@ -187,19 +186,18 @@ void RemoteGame::receiveList() {
     istringstream iss;
     char str [MAXLEN];
     //get number of games from server
-    cout << "entered receivelist func"<<endl;
     n=read(cl.getSocket(), &bufint, sizeof(bufint));
-    if (n == -1) {
-        cout<<"server closed, sorry";
+    if (n == -1 || n == 0) {
+        cout << "server closed, sorry";
         exit(0);
     }
 
     numGames = bufint;
-    cout << "numgames: "<<numGames<<endl;
     for(int i=0;i<numGames;i++){
         n=read(cl.getSocket(), &str, sizeof(str));
-        if (n == -1) {
-            cout<<"server closed, sorry";
+        if (n == -1 || n == 0) {
+            //display the available games on client console
+            cout << "server closed, sorry";
             exit(0);
         }
         cout<<str;

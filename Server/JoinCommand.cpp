@@ -17,15 +17,14 @@
 JoinCommand::JoinCommand(){}
 
 void JoinCommand::execute(vector <string> cd, int sid) {
-    cout<<"enters joincommand"<<endl;
+
+    //get instance of list of games
     GamesList* games = GamesList::getGamesList();
-    int numPlayer;
-    int opponentSocket;
-    //gameData gd;
-    opponentSocket = games->getOpponent(cd[0]);
+    int opponentSocket = games->getOpponent(cd[0], sid);;
 
 
     if (opponentSocket !=0) {
+        //if game exists and a player is waiting to be joined, start running the game
         JoinCommand::runGame(cd[0],opponentSocket,sid);
     }
 
@@ -39,43 +38,27 @@ void JoinCommand::execute(vector <string> cd, int sid) {
 
 void JoinCommand::runGame(string name, int player1Socket, int player2Socket) {
     GamesList* games = GamesList::getGamesList();
-
     int n;
     coordinate move;
     coordinate er;
     er.x = 0;
     er.y = 0;
     bool firstMove = true;
-    int num=1;
-    cout<<"joined"<<endl;
-    cout<<"player 2 socket "<< player2Socket<<endl;
-
+    //assign each player their symbol
     JoinCommand::assignSymbol(player1Socket, 1);
     JoinCommand::assignSymbol(player2Socket, 2);
 
-
-
     do {
         move = JoinCommand::passMove(player1Socket, move, firstMove);
-
-
-        cout<<"first move bool: "<<firstMove<<endl;
-        cout<<"first move: "<<move.x<<","<<move.y<<endl;
-        cout<<"player 2 socket "<< player2Socket<<endl;
-
-
         move = JoinCommand::passMove(player2Socket, move, firstMove);
-
-        cout<<"second move: "<<move.x<<","<<move.y<<endl;
         if (JoinCommand::isWin(move)) {
             break;
         }
     } while((move.x != 0) && (move.y != 0));
 
-    //close communication with the client
+    //game over, remove from list of available games
     games->removeGame(name);
-    //close(player1Socket);
-    //close(player2Socket);
+
 
 }
 
@@ -111,7 +94,6 @@ coordinate JoinCommand::passMove(int clientSocket, coordinate oppMove, bool &fir
             cout << "client disconnected" << endl;
             return er;
         }
-        cout<< "returned move: "<<move.x<<","<<move.y<<endl;
         return move;
 
     }

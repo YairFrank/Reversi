@@ -11,9 +11,17 @@
 class StartCommand: public Command {
 public:
 
+    /**
+     * constructor
+     */
     StartCommand();
 
 
+    /**
+     * execute command
+     * @param cd  client data relevant for execution of command
+     * @param sid client socket id
+     */
     virtual void execute(vector <string> cd, int sid);
 
 };

@@ -10,7 +10,17 @@
 
 class List_gamesCommand: public Command {
 public:
+
+    /**
+     * constructor
+     */
     List_gamesCommand();
+
+    /**
+     * execute command
+     * @param cd client data relevan for command execution
+     * @param sid client socket id
+     */
     virtual void execute(vector <string> cd, int sid);
 };
 

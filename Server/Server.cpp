@@ -1,10 +1,4 @@
-//
-// Created by leah on 28/12/17.
-//
 
-//
-// Created by yair on 09/12/17.
-//
 
 #include "Server.h"
 #include <sys/socket.h>
@@ -48,15 +42,6 @@ void Server::start() {
     }
     //start listening to incoming connections
     listen(serverSocket, MAX_CONNECTED_CLIENTS);
-    //pthread_t quitStatusThread, clientConnectingThread;
-
-
-    /*int rc = pthread_create(&quitStatusThread, NULL, quitStatus, (void*)this);
-    if (rc) {
-        cout << "Error: unable to create thread, " << rc << endl;
-        exit(-1);
-    }*/
-
     int rc = pthread_create(&clientConnectingThread, NULL, &getClients, (void*)serverSocket);
     if (rc) {
         cout << "Error: unable to create thread, " << rc << endl;
@@ -68,65 +53,33 @@ void Server::start() {
 
 void* Server::getClients(void* serverSocket) {
     long serverSocketId = (long)serverSocket;
-    vector<pthread_t> threads;
-    vector<pthread_t>::iterator it;
-    vector<int>::iterator itn;
-    int clientsocket;
     pthread_t thread;
+    vector<pthread_t> threads;
     int i = 1;
-    vector<int> sockets;
-
-    //create socket
-    //ths->serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-    //if (ths->serverSocket == -1) {
-    //    throw "Error opening socket";
-    //}
-
-
 
     //define the client socket's structures
     struct sockaddr_in playerAddress;
     socklen_t playerAddressLen;
 
     while (true) {
-        cout << "Waiting for client connections..." << endl;
         //accept a players connection
         int playerSocket = accept(serverSocketId, (struct sockaddr *) &playerAddress, &playerAddressLen);
-        cout << "Client number " << i << " connected" << endl;
         if (playerSocket == -1) {
             throw "Error on accept";
         }
         threads.push_back(thread);
-        cout << "In getClients: creating thread " << i << endl;
         int rc = pthread_create(&threads[i], NULL, &handleClient, (void *) playerSocket);
         if (rc) {
             cout << "Error: unable to create thread, " << rc << endl;
             exit(-1);
         }
-        i++;
     }
-
-    //server needs to close all threads connected to clients and exit.
-    for (it = threads.begin(); it != threads.end(); ++it) {
-        thread = *it;
-        pthread_cancel(thread);
-    }
-    //close all clients sockets:
-
-    GamesList* gl = GamesList::getGamesList();
-    gl->getAllSockets(sockets);
-    for (itn = sockets.begin(); itn != sockets.end(); ++itn) {
-        clientsocket = *itn;
-        close(clientsocket);
-    }
-    pthread_exit(NULL);
 }
 
 
 void* Server::handleClient(void* clientSocket) {
 
     int n;
-    //clientData cd;
     long sid = (long) clientSocket;
     char commandStr [MAX_COMMAND_LEN];
     istringstream iss;
@@ -140,23 +93,15 @@ void* Server::handleClient(void* clientSocket) {
         cout << "error reading command" << endl;
         return NULL;
     }
-    cout << "Received command: " << commandStr << endl;
     // Split the command string to the command name and the arguments
     string str(commandStr);
     iss.str(str);
     string command;
     iss >> command;
-    cout << "the command is: " << command<< endl;
     while (iss) {
-
         string arg;
         iss >> arg;
         args.push_back(arg);
-        cout << "added arg "<< arg <<endl;
-    }
-    for (it = args.begin(); it != args.end(); ++it) {
-        s = *it;
-
     }
     CommandsManager::getInstance()->executeCommand(command, args, sid);
     args.clear();
@@ -167,41 +112,18 @@ void Server::stop() {
     vector<int> sockets;
     vector<int>::iterator itn;
     int clientsocket;
-    //pthread_cancel(clientConnectingThread);
 
+    pthread_cancel(clientConnectingThread);
+    cout << "Server stopped" << endl;
     //close all clients sockets:
 
-//    GamesList* gl = GamesList::getGamesList();
-//    gl->getAllSockets(sockets);
-//    for (itn = sockets.begin(); itn != sockets.end(); ++itn) {
-//        clientsocket = *itn;
-//        close(clientsocket);
-//    }
-//    close(serverSocket);
-    cout << "Server stopped" << endl;
+    GamesList* gl = GamesList::getGamesList();
+    gl->getAllSockets(sockets);
+    for (itn = sockets.begin(); itn != sockets.end(); ++itn) {
+        clientsocket = *itn;
+        close(clientsocket);
+    }
+    close(serverSocket);
 }
 
 
-
-bool Server::isQuit() const {
-    return quit;
-}
-
-void Server::setQuit(bool quit) {
-    Server::quit = quit;
-}
-int Server::getServerSocket() const {
-    return serverSocket;
-}
-
-void Server::setServerSocket(int serverSocket) {
-    Server::serverSocket = serverSocket;
-}
-
-int Server::getPort() const {
-    return port;
-}
-
-void Server::setPort(int port) {
-    Server::port = port;
-}

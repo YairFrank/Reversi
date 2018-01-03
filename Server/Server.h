@@ -12,7 +12,7 @@ class Server {
 public:
     /**
      * constructor
-     * @param port
+     * @param port port number
      */
     Server(int port);
     /**
@@ -24,52 +24,27 @@ public:
      */
     void stop();
 
+
 private:
-    bool  quit;
     int port;
     int serverSocket;
     /**
      * handling the client
-     * @param clientSocket
-     * @param move
-     * @param firstMove
-     * @return a coordinate to each client
+     * @param clientSocket clients socket
+     * @return void pointer
      */
     static void* handleClient(void* clientSocket);
+
+
     /**
-     * assigning a number for each client
-     * @param clientSocket
-     * @param numPlayer
+     * connect clients to server
+     * @return void pointer
      */
-    void assignSymbol(int clientSocket, int numPlayer);
-
-public:
-    bool isQuit() const;
-
-    void setQuit(bool quit);
-
-    int getServerSocket() const;
-
-    void setServerSocket(int serverSocket);
-
-    int getPort() const;
-
-    void setPort(int port);
-
-private:
-    /**
-     * checking if the game is ended
-     * @param m
-     * @return
-     */
-    bool isWin(coordinate m);
-
-    static void* quitStatus(void*);
-
-
     static void* getClients(void *);
 
     pthread_t clientConnectingThread;
+
+
 };
 
 #endif //ROOT_SERVER_H

@@ -11,6 +11,7 @@
 #include<netdb.h>
 #include<string.h>
 #include<unistd.h>
+#include <cstdlib>
 
 using namespace std;
 
@@ -48,21 +49,23 @@ void Client::connectToServer() {
     if(connect(clientSocket, (struct sockaddr*)&serverAddress,sizeof(serverAddress)) == -1) {
         throw "Error connecting to server";
     }
-    cout<<"Connected to server"<<endl;
+    //cout<<"Connected to server"<<endl;
 }
 
 void Client::sendCoord(Shortcuts::coordinate &c) {
 // Write the coordinates to the socket
     int n = write(clientSocket, &c, sizeof(c));
-    if (n == -1) {
-        throw "Error writing coordinates to socket";
+    if (n == -1 || n == 0) {
+        cout << "server closed, sorry";
+        exit(0);
     }
 }
 void Client::getCoord(Shortcuts::coordinate &c) {
 // Read the coordinates from the server
     int n = read(clientSocket, &c, sizeof(c));
-    if (n == -1) {
-        throw "Error reading coordinates from socket";
+    if (n == -1 || n == 0) {
+        cout << "server closed, sorry";
+        exit(0);
     }
 }
 

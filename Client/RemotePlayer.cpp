@@ -3,6 +3,7 @@
 //
 
 #include "RemotePlayer.h"
+#include <cstdlib>
 
 RemotePlayer::RemotePlayer(): Player (){}
 
@@ -75,7 +76,8 @@ void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v
                     cout<<"in remotePlayer, sending coord: "<<coord.x<<","<<coord.y<<endl;
                     client.sendCoord(coord);
                 } catch (const char *msg) {
-                    cout << "Failed to send coordinates to server. Reason: " << msg << endl;
+                    cout << "server closed, sorry";
+                    exit(0);
                 }
                 b.enterMove(current, coord.x, coord.y);
                 gl.flipTokens(current, coord.x - 1, coord.y - 1, board, flips);
@@ -102,7 +104,9 @@ void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v
                     coord.y = -1;
                     client.sendCoord(coord);
                 } catch (const char *msg) {
-                    cout << "Failed to send coordinates to server. Reason: " << msg << endl;
+                    cout << "server closed, sorry";
+                    exit(0);
+
                 }
             }
         }
@@ -111,7 +115,8 @@ void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v
         try {
             client.getCoord(coord);
         } catch (const char *msg) {
-            cout << "Failed to get coordinates from server. Reason: " << msg << endl;
+            cout << "server closed, sorry";
+            exit(0);
         }
         if (coord.x == -1)
             return;

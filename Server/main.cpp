@@ -15,6 +15,7 @@ int main() {
     try
     {
         server.start();
+        //enable server to be stopped by user
         cout << "Enter exit to stop server" << endl;
         string str;
         cin >> str;

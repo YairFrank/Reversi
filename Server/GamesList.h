@@ -10,7 +10,7 @@
 using namespace std;
 
 
-typedef struct gameInfo {string game ; int player1sock; int player2sock; int players;} gameInfo;
+typedef struct gameInfo {string game ; int player1sock = 0; int player2sock = 0; int players;} gameInfo;
 
 /**
  * singleton class to enable keeping track of existing games and modifying the
@@ -47,8 +47,6 @@ public:
      */
     int joinPlayer(string name,int socket);
 
-    void removeSocket(int player);
-
     /**
      * removes a game from the list
      * @param name of the game
@@ -56,9 +54,16 @@ public:
      */
     int removeGame(string name);
 
-    vector<string> getAvailableGames(vector<string> &list);
+    /**
+     * @param list updates list with games available to join
+     */
+    void getAvailableGames(vector<string> &list);
 
-    int getOpponent(string game);
+    /**
+     * @param game name of game
+     * @return opponents socket id
+     */
+    int getOpponent(string game,int sid);
 
 
 

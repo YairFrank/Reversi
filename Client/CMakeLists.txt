@@ -18,6 +18,6 @@ set(SOURCE_FILES
         ReversieGame.cpp
         ReversieGame.h
         Game.h
-        Shortcuts.h AIPlayer.cpp AIPlayer.h Player.cpp Menu.cpp Menu.h Player.h HumanPlayer.h Client.cpp Client.h RemotePlayer.cpp RemotePlayer.h RemoteGame.cpp RemoteGame.h CommandManager.cpp CommandManager.h PlayerCommand.h StartGameCommand.cpp StartGameCommand.h GetListCommand.cpp GetListCommand.h JoinGameCommand.cpp JoinGameCommand.h)
+        Shortcuts.h AIPlayer.cpp AIPlayer.h Player.cpp Menu.cpp Menu.h Player.h HumanPlayer.h Client.cpp Client.h RemotePlayer.cpp RemotePlayer.h RemoteGame.cpp RemoteGame.h)
 
 add_executable(Reversi ${SOURCE_FILES})
