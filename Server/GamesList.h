@@ -56,9 +56,9 @@ public:
      */
     int removeGame(string name);
 
-    vector<string> getAvailableGames();
+    vector<string> getAvailableGames(vector<string> &list);
 
-    int getOpponent(int socket);
+    int getOpponent(string game);
 
 
 

@@ -15,6 +15,7 @@ void StartCommand::execute(vector <string> cd, int sid) {
     GamesList* games = GamesList::getGamesList();
     cout<<"adding game " << cd[0] << endl;
     status = games->addGame(cd[0],sid);
+    cout<<"startgame status: "<< status<<endl;
 
         //Notify client if succeeded to add game (if game already exists, will send 0 to indicate failure
         n=write(sid, &status , sizeof(status));

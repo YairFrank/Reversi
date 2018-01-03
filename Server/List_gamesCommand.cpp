@@ -9,24 +9,29 @@
 #include <unistd.h>
 #include <stdexcept>
 #include <iostream>
+#include <cstring>
 
 List_gamesCommand::List_gamesCommand() {}
 
 void List_gamesCommand::execute(vector <string> cd, int sid) {
+    char char_array[50];
     cout<<"enterd listGamescommand server"<<endl;
     int numGames = 0;
     GamesList* games = GamesList::getGamesList();
-    vector<string> list = games->getAvailableGames();
+    vector<string> list;
+    games->getAvailableGames(list);
     vector<string>::iterator it;
     string game;
 
     //check how many games there are
     for (it = list.begin(); it != list.end(); ++it) {
+        cout<<"blea"<<endl;
         numGames++;
     }
 
     //inform client of number of games to expect
     int n=write(sid, &numGames, sizeof(numGames));
+    cout<<"writing number of games to client" << numGames <<endl;
     if (n == -1) {
         throw runtime_error("error in writing my number of games");
     }
@@ -34,7 +39,9 @@ void List_gamesCommand::execute(vector <string> cd, int sid) {
     //write games to client
     for (it = list.begin(); it != list.end(); ++it) {
         game = *it;
-        int n=write(sid, &game, sizeof(game));
+        strcpy(char_array, game.c_str());
+        cout<<"the game is: "<< game<<endl;
+        int n=write(sid, &char_array, sizeof(char_array));
         if (n == -1) {
             throw runtime_error("error in writing game name");
         }

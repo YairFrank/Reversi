@@ -27,7 +27,7 @@ void RemoteGame::initialize() {
     char current, other;
     bool firstMove = true;
     char commandStr[MAXLEN];
-    istringstream iss;
+    //istringstream iss;
     RemotePlayer *p;
     string IP;
     int port;
@@ -56,10 +56,13 @@ void RemoteGame::initialize() {
             cin.ignore();
             first = false;
         }
-
+        cin.clear();
         getline(cin, input);
-        iss.str(input);
+        cout<<"input is "<< input <<endl;
+        istringstream iss(input);
+        string command;
         iss >> command;
+        cout<<"command is "<< command <<endl;
         //if client wants to exit game
         if (command == "exit") {
             cout << "bye :)";
@@ -94,11 +97,20 @@ void RemoteGame::initialize() {
             }
             if (status == 0) {
                 cout << "start failed, game already exists"<< endl;
-                continue;
+                break;
             }
             cout <<"game initialized, waiting for another player to connect..."<<endl;
             RemoteGame::play();
         } else if (command == "join"){
+            cout<<"asked to join"<<endl;
+            try {
+                cl.connectToServer();
+            }
+            catch (const char *msg) {
+                cout << "Failed to connect to server. Reason:" << msg << endl;
+            }
+            strcpy(char_array, input.c_str());
+            n=write(cl.getSocket(), &char_array , sizeof(char_array));
             RemoteGame::play();
         } else {
             cout<<"list games"<<endl;
@@ -115,14 +127,6 @@ void RemoteGame::play() {
     char current, other;
     bool firstMove=true;
     RemotePlayer* p;
-    //Client cl("127.0.0.1", 8234);
-    try {
-        cl.connectToServer();
-    }
-    catch (const char *msg) {
-        cout << "server closed, sorry";
-        exit(0);
-    }
 
     //get information from server that client should wait for another player to connect/player symbol
     n=read(cl.getSocket(), &numplay, sizeof(numplay));
@@ -191,19 +195,20 @@ char RemoteGame::getWinner(char current, char other) {
 }
 
 void RemoteGame::receiveList() {
-    int n,numGames;
+    int n,numGames, bufint;
     string input, buffer;
     istringstream iss;
     char str [MAXLEN];
     //get number of games from server
     cout << "entered receivelist func"<<endl;
-    n=read(cl.getSocket(), &numGames, sizeof(numGames));
+    n=read(cl.getSocket(), &bufint, sizeof(bufint));
     if (n == -1) {
         cout<<"server closed, sorry";
         exit(0);
     }
 
-
+    numGames = bufint;
+    cout << "numgames: "<<numGames<<endl;
     for(int i=0;i<numGames;i++){
         n=read(cl.getSocket(), &str, sizeof(str));
         if (n == -1) {

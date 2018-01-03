@@ -12,34 +12,36 @@
 #include <pthread.h>
 #include <cstdlib>
 
-typedef struct gameData{string name;int player1Socket; int player2socket; JoinCommand* myClass;} gameData;
+
 
 JoinCommand::JoinCommand(){}
 
 void JoinCommand::execute(vector <string> cd, int sid) {
+    cout<<"enters joincommand"<<endl;
     GamesList* games = GamesList::getGamesList();
     int numPlayer;
     int opponentSocket;
-    gameData gd;
-    opponentSocket = games->getOpponent(sid);
+    //gameData gd;
+    opponentSocket = games->getOpponent(cd[0]);
 
 
     if (opponentSocket !=0) {
-        gd.name = cd[0];
-        gd.player1Socket = opponentSocket;
-        gd.player2socket = sid;
-        vector<pthread_t> threads;
-        pthread_t thread;
-        gameData* gdp= &gd;
-        gd.myClass = this;
+//        gd.name = cd[0];
+//        gd.player1Socket = opponentSocket;
+//        gd.player2socket = sid;
+//        vector<pthread_t> threads;
+//        pthread_t thread;
+//        gameData* gdp= &gd;
+//        gd.myClass = this;
+        JoinCommand::runGame(cd[0],opponentSocket,sid);
 
 
-        threads.push_back(thread);
-        int rc = pthread_create(&thread, NULL, runGame, (void*)gdp);
-        if (rc) {
-            cout << "Error: unable to create thread, " << rc << endl;
-            exit(-1);
-        }
+//        threads.push_back(thread);
+//        int rc = pthread_create(&thread, NULL, runGame, (void*)gdp);
+//        if (rc) {
+//            cout << "Error: unable to create thread, " << rc << endl;
+//            exit(-1);
+//        }
 
     }
 
@@ -51,11 +53,9 @@ void JoinCommand::execute(vector <string> cd, int sid) {
     }
 }
 
-void* JoinCommand::runGame(void *gd) {
+void JoinCommand::runGame(string name, int player1Socket, int player2Socket) {
     GamesList* games = GamesList::getGamesList();
-    int player1Socket;
-    int player2Socket;
-    string name;
+    
     int n;
     coordinate move;
     coordinate er;
@@ -63,22 +63,17 @@ void* JoinCommand::runGame(void *gd) {
     er.y = 0;
     bool firstMove = true;
     int num=1;
-    gameData *data = (gameData*)gd;
-    name = data->name;
-    player1Socket = data->player1Socket;
-    player2Socket = data->player2socket;
-    JoinCommand* jc = data->myClass;
     cout<<"joined"<<endl;
 
-    jc->assignSymbol(player1Socket, 1);
-    jc->assignSymbol(player2Socket, 2);
+    JoinCommand::assignSymbol(player1Socket, 1);
+    JoinCommand::assignSymbol(player2Socket, 2);
 
 
 
     do {
-        move = jc->passMove(player1Socket, move, firstMove);
-        move = jc->passMove(player2Socket, move, firstMove);
-        if (jc->isWin(move)) {
+        move = JoinCommand::passMove(player1Socket, move, firstMove);
+        move = JoinCommand::passMove(player2Socket, move, firstMove);
+        if (JoinCommand::isWin(move)) {
             break;
         }
     } while((move.x != 0) && (move.y != 0));

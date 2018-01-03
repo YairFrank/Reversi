@@ -26,13 +26,16 @@ GamesList* GamesList::getGamesList()
 GamesList::GamesList() {};
 
 int GamesList::addGame(string name, int socket) {
+    cout<<"success! "<<endl;
     gameInfo game;
     vector<gameInfo>::iterator it;
     gameInfo gi;
     for (it = games.begin(); it != games.end(); ++it) {
         gi = *it;
+        //cout<<"game: "<< gi.game <<endl;
         if (name == gi.game) {
             //the game already exists
+            cout<<"same game"<< endl;
             return 0;
         }
     }
@@ -40,6 +43,8 @@ int GamesList::addGame(string name, int socket) {
     game.player1sock = socket;
     game.player2sock = 0;
     game.players = 1;
+    games.push_back(game);
+
 
     return 1;
 }
@@ -78,9 +83,8 @@ int GamesList::removeGame(string name) {
     return 0;
 }
 
-vector<string> GamesList::getAvailableGames() {
+vector<string> GamesList::getAvailableGames(vector<string> &list) {
     vector<gameInfo>::iterator it;
-    vector<string> list;
     gameInfo gi;
     int numGames = 0;
     for (it = games.begin(); it != games.end(); ++it) {
@@ -95,14 +99,15 @@ vector<string> GamesList::getAvailableGames() {
 
 }
 
-int GamesList::getOpponent(int socket) {
+int GamesList::getOpponent(string name) {
+    gameInfo game;
     vector<gameInfo>::iterator it;
     gameInfo gi;
     for (it = games.begin(); it != games.end(); ++it) {
         gi = *it;
-        if (gi.player1sock == socket) {
-            return gi.player2sock;
-        } else if(gi.player2sock == socket) {
+        //cout<<"game: "<< gi.game <<endl;
+        if (name == gi.game) {
+            //found the game in the lis, return opponents socket id
             return gi.player1sock;
         }
     }

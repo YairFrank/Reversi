@@ -37,7 +37,9 @@ CommandsManager* CommandsManager::getInstance() {
 void CommandsManager::executeCommand(string command, vector <string> cd, int sid) {
     Command *commandObj = commandsMap[command];
 
+    cout<<"entered command manger with param " << cd[0] <<endl;
     commandObj->execute(cd, sid);
+
     pthread_exit(NULL);
 }
 
