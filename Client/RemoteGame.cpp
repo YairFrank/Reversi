@@ -15,12 +15,12 @@
 using namespace std;
 #define MAXLEN 50
 
-RemoteGame::RemoteGame() : b(Board()), gl(GameLogic()) {
+RemoteGame::RemoteGame() : b(Board(4)), gl(GameLogic()) {
 }
 
 void RemoteGame::initialize() {
 
-    bool first = true;
+    bool first = true, played = false;
     char char_array[MAXLEN];
     string input, command;
     int n, numCommand = 0, status;
@@ -56,7 +56,7 @@ void RemoteGame::initialize() {
              "to see existing games, please type - list_games" << endl << endl <<
              "to join an existing game from the list, please type - join name_of_game_to_join" << endl;
 
-        if (first) {
+        if (first || played) {
             cin.ignore();
             first = false;
         }
@@ -101,24 +101,12 @@ void RemoteGame::initialize() {
             }
             if (status == 0) {
                 cout << "start failed, game already exists"<< endl;
-                break;
+                continue;
             }
             cout <<"game initialized, waiting for another player to connect..."<<endl;
             RemoteGame::play();
         } else if (command == "join"){
-            cout<<"int join"<<endl;
-//            if((numCommand != 0)) {
-//                cout << "asked to join" << endl;
-//                try {
-//                    cl.connectToServer();
-//                    cout<< "socket num: "<<cl.getSocket();
-//                }
-//                catch (const char *msg) {
-//                    cout << "Failed to connect to server. Reason:" << msg << endl;
-//                }
-//            }
-            //strcpy(char_array, input.c_str());
-            //n=write(cl.getSocket(), &char_array , sizeof(char_array));
+            played = true;
             RemoteGame::play();
         } else {
             cout<<"list games"<<endl;

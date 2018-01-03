@@ -57,15 +57,15 @@ void JoinCommand::runGame(string name, int player1Socket, int player2Socket) {
 
     do {
         move = JoinCommand::passMove(player1Socket, move, firstMove);
-        
-        
+
+
         cout<<"first move bool: "<<firstMove<<endl;
         cout<<"first move: "<<move.x<<","<<move.y<<endl;
         cout<<"player 2 socket "<< player2Socket<<endl;
-        
-        
+
+
         move = JoinCommand::passMove(player2Socket, move, firstMove);
-        
+
         cout<<"second move: "<<move.x<<","<<move.y<<endl;
         if (JoinCommand::isWin(move)) {
             break;
@@ -74,8 +74,8 @@ void JoinCommand::runGame(string name, int player1Socket, int player2Socket) {
 
     //close communication with the client
     games->removeGame(name);
-    close(player1Socket);
-    close(player2Socket);
+    //close(player1Socket);
+    //close(player2Socket);
 
 }
 

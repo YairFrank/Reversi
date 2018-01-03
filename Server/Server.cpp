@@ -133,9 +133,6 @@ void* Server::handleClient(void* clientSocket) {
     vector<string> args;
     vector<string>::iterator it;
     string s;
-    //CommandsManager cm;
-    //create a command manager
-    //cm = new CommandsManager();
 
     //get clients command
     n = read(sid, &commandStr, sizeof(commandStr));
@@ -167,8 +164,20 @@ void* Server::handleClient(void* clientSocket) {
 }
 
 void Server::stop() {
+    vector<int> sockets;
+    vector<int>::iterator itn;
+    int clientsocket;
     //pthread_cancel(clientConnectingThread);
-    close(serverSocket);
+
+    //close all clients sockets:
+
+//    GamesList* gl = GamesList::getGamesList();
+//    gl->getAllSockets(sockets);
+//    for (itn = sockets.begin(); itn != sockets.end(); ++itn) {
+//        clientsocket = *itn;
+//        close(clientsocket);
+//    }
+//    close(serverSocket);
     cout << "Server stopped" << endl;
 }
 
