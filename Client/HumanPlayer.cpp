@@ -21,7 +21,7 @@ HumanPlayer::HumanPlayer(char x): Player (x){}
 
 void HumanPlayer::playTurn
         (Shortcuts::coordinate &coord, Shortcuts::coordVec &v,
-         Board &b, GameLogic &gl, char &current, char &other, Client &cl, bool &firstMove, Shortcuts::PlayMessage &p) {
+         Board &b, GameLogic &gl, char &current, char &other, Client &cl, bool &firstMove) {
     int flag=0;
     int x, y;
     char c;

@@ -19,7 +19,7 @@ public:
 		typedef struct coordinate {int x; int y;} coordinate;
 		typedef struct aiOption {coordinate move; int score;} aiOption;
 		typedef vector<Shortcuts::coordinate> coordVec;
-	    typedef struct PlayMessage {string str; int x; int y;} PlayMessage;
+	    //typedef struct PlayMessage {string str; int x; int y;} PlayMessage;
 };
 
 

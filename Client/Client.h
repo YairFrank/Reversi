@@ -8,38 +8,13 @@
 
 #include "Shortcuts.h"
 
-class PlayMessage;
-
 class Client {
 public:
-    /**
-     * constructor
-     */
     Client ();
-    /**
-     * constructor
-     * @param serverIP
-     * @param serverPort
-     */
     Client (const char *serverIP, int serverPort);
-    /**
-     * connecting to the server
-     */
     void connectToServer();
-    /**
-     * writing the coordinate to the server
-     * @param c
-     */
-    void sendMessage(Shortcuts::PlayMessage& play);
-    /**
-     * reading the coordinate to the server
-     * @param c
-     */
-    void getMessage(Shortcuts::PlayMessage& play);
-    /**
-     * getting the socket number
-     * @return the socket number
-     */
+    void sendCoord(Shortcuts::coordinate &c);
+    void getCoord(Shortcuts::coordinate &c);
     int getSocket();
 private:
 

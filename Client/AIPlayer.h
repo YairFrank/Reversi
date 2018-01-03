@@ -19,7 +19,7 @@ public:
      * @param v vector of all AI's possible moves.
      */
     void playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v,
-				  Board &b, GameLogic &gamel, char &current, char &other, Client &cl, bool &firstMove, Shortcuts::PlayMessage &p);
+				  Board &b, GameLogic &gamel, char &current, char &other, Client &cl, bool &firstMove);
 	/**
 	 *
 	 * @param b board.

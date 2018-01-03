@@ -12,8 +12,6 @@
 #include<string.h>
 #include<unistd.h>
 
-class PlayMessage;
-
 using namespace std;
 
 Client::Client() = default;
@@ -53,18 +51,18 @@ void Client::connectToServer() {
     cout<<"Connected to server"<<endl;
 }
 
-void Client::sendMessage(Shortcuts::PlayMessage& play) {
+void Client::sendCoord(Shortcuts::coordinate &c) {
 // Write the coordinates to the socket
-    int n = write(clientSocket, &play, 100);
+    int n = write(clientSocket, &c, sizeof(c));
     if (n == -1) {
-        throw "Server is closed, dude";
+        throw "Error writing coordinates to socket";
     }
 }
-void Client::getMessage(Shortcuts::PlayMessage& play) {
+void Client::getCoord(Shortcuts::coordinate &c) {
 // Read the coordinates from the server
-    int n = read(clientSocket, &play, 100);
+    int n = read(clientSocket, &c, sizeof(c));
     if (n == -1) {
-        throw "Server is closed, dude";
+        throw "Error reading coordinates from socket";
     }
 }
 

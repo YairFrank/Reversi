@@ -134,20 +134,7 @@ void RemoteGame::play() {
         cout << "server closed, sorry";
         exit(0);
     }
-//    if (waitmsg == 3) {
-//        cout << "waiting for another player to connect..." << endl;
-//        //get information from server about player's symbol
-//        n=read(cl.getSocket(), &num, sizeof(num));
-//        if (n == -1)
-//            throw runtime_error ("Error reading number from socket");
-//    }
-//
-//    //in case current client was not first to connect.
-//    if (waitmsg != 3)
-//        numplay = waitmsg;
-//    else {
-//        numplay=num;
-//    }
+
     if (numplay == 0) {
         //server sends 0 upon failure to join unexisiting game
         cout << "join failed, no such game exists"<< endl;
@@ -170,11 +157,11 @@ void RemoteGame::play() {
     Shortcuts::matrix board;
     Shortcuts::coordVec pv;
     Shortcuts::coordinate c;
-    Shortcuts::PlayMessage play;
+    //Shortcuts::PlayMessage play;
     char winner;
     //if exits while loop - neither players have moves. Game over.
-    while (b.hasFreeSpaces()&&play.x!=-2)
-        p->playTurn(c, pv, b, gl, current, other, cl, firstMove, play);
+    while (b.hasFreeSpaces()&&c.x!=-2)
+        p->playTurn(c, pv, b, gl, current, other, cl, firstMove);
     // neither player has valid moves available. Game over.
     //announce winner
     winner = RemoteGame::getWinner(current, other);
@@ -183,10 +170,13 @@ void RemoteGame::play() {
     } else {
         cout << "Game Over. Winner is " << winner << " :)" << endl;
     }
-    //message.str1="close";
-    //n=write(cl.getSocket(), &message, 100);
-    if (n == -1)
-        throw runtime_error ("server is closed, dude");
+    try{
+        c.x=-3;
+        c.y=-3;
+        cl.sendCoord(c);
+    }catch (const char *msg) {
+        cout << "Failed to send coordinates to server. Reason: " << msg << endl;
+    }
     delete p;
 }
 

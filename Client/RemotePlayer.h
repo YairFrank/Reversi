@@ -31,7 +31,7 @@ public:
      * @param firstMove
      */
     void playTurn(Shortcuts::coordinate & coord, Shortcuts::coordVec &v,
-                  Board &b, GameLogic &gl, char &current, char &other, Client &client, bool &firstMove, Shortcuts::PlayMessage &p);
+                  Board &b, GameLogic &gl, char &current, char &other, Client &client, bool &firstMove);
 };
 
 
