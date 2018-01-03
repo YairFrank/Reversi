@@ -26,22 +26,9 @@ void JoinCommand::execute(vector <string> cd, int sid) {
 
 
     if (opponentSocket !=0) {
-//        gd.name = cd[0];
-//        gd.player1Socket = opponentSocket;
-//        gd.player2socket = sid;
-//        vector<pthread_t> threads;
-//        pthread_t thread;
-//        gameData* gdp= &gd;
-//        gd.myClass = this;
+
         JoinCommand::runGame(cd[0],opponentSocket,sid);
 
-
-//        threads.push_back(thread);
-//        int rc = pthread_create(&thread, NULL, runGame, (void*)gdp);
-//        if (rc) {
-//            cout << "Error: unable to create thread, " << rc << endl;
-//            exit(-1);
-//        }
 
     }
 
@@ -55,7 +42,7 @@ void JoinCommand::execute(vector <string> cd, int sid) {
 
 void JoinCommand::runGame(string name, int player1Socket, int player2Socket) {
     GamesList* games = GamesList::getGamesList();
-    
+
     int n;
     coordinate move;
     coordinate er;
