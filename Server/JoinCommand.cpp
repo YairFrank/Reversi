@@ -26,10 +26,7 @@ void JoinCommand::execute(vector <string> cd, int sid) {
 
 
     if (opponentSocket !=0) {
-
         JoinCommand::runGame(cd[0],opponentSocket,sid);
-
-
     }
 
     //No such game is available to join, write message to player - he gets 0, meaning join command failed.
@@ -51,6 +48,7 @@ void JoinCommand::runGame(string name, int player1Socket, int player2Socket) {
     bool firstMove = true;
     int num=1;
     cout<<"joined"<<endl;
+    cout<<"player 2 socket "<< player2Socket<<endl;
 
     JoinCommand::assignSymbol(player1Socket, 1);
     JoinCommand::assignSymbol(player2Socket, 2);
@@ -59,7 +57,10 @@ void JoinCommand::runGame(string name, int player1Socket, int player2Socket) {
 
     do {
         move = JoinCommand::passMove(player1Socket, move, firstMove);
+        cout<<"first move: "<<move.x<<","<<move.y<<endl;
+        cout<<"player 2 socket "<< player2Socket<<endl;
         move = JoinCommand::passMove(player2Socket, move, firstMove);
+        cout<<"second move: "<<move.x<<","<<move.y<<endl;
         if (JoinCommand::isWin(move)) {
             break;
         }

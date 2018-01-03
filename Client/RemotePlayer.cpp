@@ -72,6 +72,7 @@ void RemotePlayer::playTurn(Shortcuts::coordinate &coord, Shortcuts::coordVec &v
                     }
                 }
                 try {
+                    cout<<"in remotePlayer, sending coord: "<<coord.x<<","<<coord.y<<endl;
                     client.sendCoord(coord);
                 } catch (const char *msg) {
                     cout << "Failed to send coordinates to server. Reason: " << msg << endl;

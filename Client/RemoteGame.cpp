@@ -23,11 +23,8 @@ void RemoteGame::initialize() {
     bool first = true;
     char char_array[MAXLEN];
     string input, command;
-    int numplay, waitmsg, n, num, status;
-    char current, other;
-    bool firstMove = true;
-    char commandStr[MAXLEN];
-    //istringstream iss;
+    int n, numCommand = 0, status;
+
     RemotePlayer *p;
     string IP;
     int port;
@@ -102,18 +99,21 @@ void RemoteGame::initialize() {
             cout <<"game initialized, waiting for another player to connect..."<<endl;
             RemoteGame::play();
         } else if (command == "join"){
-            cout<<"asked to join"<<endl;
-            try {
-                cl.connectToServer();
-            }
-            catch (const char *msg) {
-                cout << "Failed to connect to server. Reason:" << msg << endl;
+            if((numCommand > 0)) {
+                cout << "asked to join" << endl;
+                try {
+                    cl.connectToServer();
+                }
+                catch (const char *msg) {
+                    cout << "Failed to connect to server. Reason:" << msg << endl;
+                }
             }
             strcpy(char_array, input.c_str());
             n=write(cl.getSocket(), &char_array , sizeof(char_array));
             RemoteGame::play();
         } else {
             cout<<"list games"<<endl;
+            numCommand++;
             //player asked to get a list of games
             RemoteGame::receiveList();
         }
@@ -132,7 +132,7 @@ void RemoteGame::play() {
     n=read(cl.getSocket(), &numplay, sizeof(numplay));
     if (n == -1) {
         cout << "server closed, sorry";
-        exit(0);
+        return;
     }
 
     if (numplay == 0) {
