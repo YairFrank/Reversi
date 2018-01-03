@@ -44,6 +44,13 @@ void RemoteGame::initialize() {
     }
 
     while (true) {
+        cl = client;
+        try {
+            cl.connectToServer();
+        }
+        catch (const char *msg) {
+            cout << "Failed to connect to server. Reason:" << msg << endl;
+        }
         cout << "Choose one of the options below:" << endl << endl <<
              "to start a new game, please type - start my_game" << endl << endl <<
              "to see existing games, please type - list_games" << endl << endl <<
@@ -99,17 +106,19 @@ void RemoteGame::initialize() {
             cout <<"game initialized, waiting for another player to connect..."<<endl;
             RemoteGame::play();
         } else if (command == "join"){
-            if((numCommand > 0)) {
-                cout << "asked to join" << endl;
-                try {
-                    cl.connectToServer();
-                }
-                catch (const char *msg) {
-                    cout << "Failed to connect to server. Reason:" << msg << endl;
-                }
-            }
-            strcpy(char_array, input.c_str());
-            n=write(cl.getSocket(), &char_array , sizeof(char_array));
+            cout<<"int join"<<endl;
+//            if((numCommand != 0)) {
+//                cout << "asked to join" << endl;
+//                try {
+//                    cl.connectToServer();
+//                    cout<< "socket num: "<<cl.getSocket();
+//                }
+//                catch (const char *msg) {
+//                    cout << "Failed to connect to server. Reason:" << msg << endl;
+//                }
+//            }
+            //strcpy(char_array, input.c_str());
+            //n=write(cl.getSocket(), &char_array , sizeof(char_array));
             RemoteGame::play();
         } else {
             cout<<"list games"<<endl;
