@@ -9,6 +9,7 @@
 #include <sstream>
 #include <cstring>
 #include "GetListCommand.h"
+#define MAXLEN 50
 
 void GetListCommand::execute(char char_array [], int sid) {
     string input, buffer;
@@ -17,7 +18,7 @@ void GetListCommand::execute(char char_array [], int sid) {
     if (n == -1)
         throw runtime_error ("server is closed, dude");
     int numGames;
-    char str [MAX];
+    char str [MAXLEN];
     n=read(sid, &numGames, sizeof(numGames));
     if (n == -1)
         throw runtime_error ("server is closed, dude");

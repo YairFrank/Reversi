@@ -9,6 +9,7 @@
 #include "GameLogic.h"
 #include "Board.h"
 #include "Game.h"
+#include "Client.h"
 
 class RemoteGame : public Game {
 public:
@@ -23,22 +24,25 @@ public:
     void play();
 
     /**
-     * @return the sign of the winner (t if tied).
+     * initialize game by sending command to server
      */
-    char getWinner(char current, char other) const;
+    void initialize();
 
     /**
-     * check if given coordinate is one of the available moves.
-     * @param c given coordinate.
-     * @param v vector of available moves (coordinates).
-     * @return true if move is valid, false otherwise.
+     * @return the sign of the winner (t if tied).
      */
+    char getWinner(char current, char other);
+
 
 private:
 
     Board b;
 
     GameLogic gl;
+
+    Client cl;
+
+    void receiveList();
 };
 
 

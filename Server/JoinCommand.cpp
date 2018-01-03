@@ -68,13 +68,10 @@ void* JoinCommand::runGame(void *gd) {
     player1Socket = data->player1Socket;
     player2Socket = data->player2socket;
     JoinCommand* jc = data->myClass;
-    cout<<"gdgsaegresrg";
-    n=write(data->player1Socket, &num, sizeof(num));
-    if (n == -1) {
-        cout << "error writing to socket"<< endl;
-    }
-    //jc->assignSymbol(player1Socket, 1);
-    //jc->assignSymbol(player2Socket, 2);
+    cout<<"joined"<<endl;
+
+    jc->assignSymbol(player1Socket, 1);
+    jc->assignSymbol(player2Socket, 2);
 
 
 
@@ -90,7 +87,6 @@ void* JoinCommand::runGame(void *gd) {
     games->removeGame(name);
     close(player1Socket);
     close(player2Socket);
-    pthread_exit(NULL);
 
 }
 
@@ -130,6 +126,7 @@ coordinate JoinCommand::passMove(int clientSocket, coordinate oppMove, bool &fir
 
     }
 }
+
 
 void JoinCommand::assignSymbol(int clientSocket, int numPlayer) const {
     int n = write(clientSocket, &numPlayer, sizeof(numPlayer));

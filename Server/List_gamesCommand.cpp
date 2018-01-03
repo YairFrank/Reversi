@@ -8,10 +8,12 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <stdexcept>
+#include <iostream>
 
 List_gamesCommand::List_gamesCommand() {}
 
 void List_gamesCommand::execute(vector <string> cd, int sid) {
+    cout<<"enterd listGamescommand server"<<endl;
     int numGames = 0;
     GamesList* games = GamesList::getGamesList();
     vector<string> list = games->getAvailableGames();

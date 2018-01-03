@@ -38,6 +38,7 @@ void CommandsManager::executeCommand(string command, vector <string> cd, int sid
     Command *commandObj = commandsMap[command];
 
     commandObj->execute(cd, sid);
+    pthread_exit(NULL);
 }
 
 CommandsManager::~CommandsManager() {

@@ -12,14 +12,19 @@ void StartGameCommand::execute(char char_array [], int sid) {
     int n=write(sid, &char_array , sizeof(char_array));
     if (n == -1)
         throw runtime_error ("server is closed, dude");
-    cout << "waiting for another player to connect..." << endl;
+
     n=read(sid, &num, sizeof(num));
     if (n == -1)
         throw runtime_error ("server is closed, dude");
-    if(num==0)
-        cout<<"Game is already exist";
-    if(num==1)
-        cout<<"Game initialized";
+    if(num==0) {
+        cout << "Game already exists";
+        return;
+    }
+    if(num==1) {
+        cout << "Game initialized" << endl;
+        cout << "waiting for another player to connect..." << endl;
+
+    }
 
 }
 

@@ -167,43 +167,12 @@ void* Server::handleClient(void* clientSocket) {
 }
 
 void Server::stop() {
-    pthread_cancel(clientConnectingThread);
+    //pthread_cancel(clientConnectingThread);
     close(serverSocket);
     cout << "Server stopped" << endl;
 }
 
 
-void* Server::quitStatus(void* class_ptr) {
-    Server* ths = (Server*)class_ptr;
-    string q;
-    while(true) {
-
-        cin >> q;
-        if (q == "exit") {
-            ths->quit = true;
-            break;
-        }
-    }
-    pthread_exit(NULL);
-}
-void Server::assignSymbol(int clientSocket, int numPlayer) {
-    int n = write(clientSocket, &numPlayer, sizeof(numPlayer));
-    if (n == -1) {
-        cout << "error writing to socket"<< endl;
-        return;
-    }
-}
-
-bool Server::isWin(coordinate m) {
-    if ((m.x == -3) && (m.y == -3)) {
-        return true;
-    }
-    return false;
-}
-
-//void Server::stop() {
-//    close(serverSocket);
-//}
 
 bool Server::isQuit() const {
     return quit;
