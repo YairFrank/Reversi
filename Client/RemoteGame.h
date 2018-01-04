@@ -42,7 +42,15 @@ private:
 
     Client cl;
 
+    /**
+     * get the list of games from server
+     */
     void receiveList();
+
+    /**
+     * @return check if command is valid
+     */
+    bool checkValid(string command);
 };
 
 

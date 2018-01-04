@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include <cstdlib>
+#include <limits>
 
 using namespace std;
 #define MAXLEN 50
@@ -20,14 +21,14 @@ RemoteGame::RemoteGame() : b(Board()), gl(GameLogic()) {
 
 void RemoteGame::initialize() {
 
-    bool first = true, played = false;
+    bool first = true, played = false,valid;
     char char_array[MAXLEN];
     string input, command;
     int n, numCommand = 0, status;
 
     RemotePlayer *p;
     string IP;
-    int port;
+    int port, flag = 0;  //for getLine func correctness;
     ifstream inFile;
     inFile.open("infoclient.txt");
     inFile >> IP;
@@ -66,13 +67,19 @@ void RemoteGame::initialize() {
             cout << "bye :)";
             return;
         }
-        //check for valid input
-        while (cin.fail() || (command != "start" && command != "join" && command != "list_games")) {
-            cout << "Error, please enter valid option" << endl;
+
+        while(!checkValid(command)) {
             cin.clear();
             getline(cin, input);
+            cout<<"input: "<<input<<endl;
             iss.str(input);
+            string command;
             iss >> command;
+            cout<<"command: "<<command<<endl;
+            valid = checkValid(command);
+            if (valid) {
+                break;
+            }
         }
 
         //write command to server
@@ -113,6 +120,14 @@ void RemoteGame::initialize() {
         }
 
     }
+}
+
+bool RemoteGame::checkValid(string command) {
+    if ((command != "start" && command != "join" && command != "list_games")) {
+        cout << "Error, please enter valid option: "<<command << endl;
+        return false;
+    }
+    return true;
 }
 
 
@@ -193,6 +208,9 @@ void RemoteGame::receiveList() {
     }
 
     numGames = bufint;
+    if (numGames == 0) {
+        cout<<"no games to join"<<endl;
+    }
     for(int i=0;i<numGames;i++){
         n=read(cl.getSocket(), &str, sizeof(str));
         if (n == -1 || n == 0) {

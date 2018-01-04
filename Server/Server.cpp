@@ -13,11 +13,10 @@
 #include "CommandsManager.h"
 
 
-
 using namespace std;
 #define MAX_CONNECTED_CLIENTS 10
 #define MAX_COMMAND_LEN 50
-
+typedef struct threadInfo {long serverSock; vector<pthread_t> pthreads;} threadInfo;
 
 Server::Server(int port): port(port), serverSocket(0), clientConnectingThread(0) {
     cout << "Server" << endl;
@@ -27,7 +26,10 @@ Server::Server(int port): port(port), serverSocket(0), clientConnectingThread(0)
 
 void Server::start() {
     //create socket
-    serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+    long serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+
+    threadInfo* ti = new threadInfo;
+
     if (serverSocket == -1) {
         throw "Error opening socket";
     }
@@ -42,7 +44,9 @@ void Server::start() {
     }
     //start listening to incoming connections
     listen(serverSocket, MAX_CONNECTED_CLIENTS);
-    int rc = pthread_create(&clientConnectingThread, NULL, &getClients, (void*)serverSocket);
+    ti->serverSock = serverSocket;
+    ti->pthreads = threads;
+    int rc = pthread_create(&clientConnectingThread, NULL, &getClients, (void*)ti);
     if (rc) {
         cout << "Error: unable to create thread, " << rc << endl;
         exit(-1);
@@ -51,11 +55,15 @@ void Server::start() {
 }
 
 
-void* Server::getClients(void* serverSocket) {
-    long serverSocketId = (long)serverSocket;
+void* Server::getClients(void* tinfo) {
+
+    threadInfo* ti = (threadInfo*)tinfo;
+    long serverSid = ti->serverSock;
+    vector<pthread_t > threads = ti->pthreads;
+
     pthread_t thread;
-    vector<pthread_t> threads;
-    int i = 1;
+
+    int i = 0;
 
     //define the client socket's structures
     struct sockaddr_in playerAddress;
@@ -63,7 +71,7 @@ void* Server::getClients(void* serverSocket) {
 
     while (true) {
         //accept a players connection
-        int playerSocket = accept(serverSocketId, (struct sockaddr *) &playerAddress, &playerAddressLen);
+        int playerSocket = accept(serverSid, (struct sockaddr *) &playerAddress, &playerAddressLen);
         if (playerSocket == -1) {
             throw "Error on accept";
         }
@@ -73,6 +81,7 @@ void* Server::getClients(void* serverSocket) {
             cout << "Error: unable to create thread, " << rc << endl;
             exit(-1);
         }
+        i++;
     }
 }
 
@@ -109,11 +118,21 @@ void* Server::handleClient(void* clientSocket) {
 }
 
 void Server::stop() {
+
+    vector<pthread_t>::iterator it;
+    pthread_t pt;
     vector<int> sockets;
     vector<int>::iterator itn;
     int clientsocket;
 
     pthread_cancel(clientConnectingThread);
+
+    //close all client-handling threads
+    for (it = threads.begin(); it != threads.end(); ++it) {
+        pt = *it;
+        pthread_cancel(pt);
+    }
+
     cout << "Server stopped" << endl;
     //close all clients sockets:
 

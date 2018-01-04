@@ -10,7 +10,7 @@
 using namespace std;
 
 
-typedef struct gameInfo {string game ; int player1sock = 0; int player2sock = 0; int players;} gameInfo;
+typedef struct gameInfo {string game ; int player1sock ; int player2sock; int players;} gameInfo;
 
 /**
  * singleton class to enable keeping track of existing games and modifying the

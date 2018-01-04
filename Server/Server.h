@@ -44,6 +44,8 @@ private:
 
     pthread_t clientConnectingThread;
 
+    vector<pthread_t> threads;
+
 
 };
 

@@ -31,10 +31,8 @@ int GamesList::addGame(string name, int socket) {
     gameInfo gi;
     for (it = games.begin(); it != games.end(); ++it) {
         gi = *it;
-        //cout<<"game: "<< gi.game <<endl;
         if (name == gi.game) {
             //the game already exists
-            cout<<"same game"<< endl;
             return 0;
         }
     }
@@ -69,12 +67,9 @@ int GamesList::removeGame(string name) {
 void GamesList::getAvailableGames(vector<string> &list) {
     vector<gameInfo>::iterator it;
     gameInfo gi;
-    int numGames = 0;
     for (it = games.begin(); it != games.end(); ++it) {
         gi = *it;
-        cout<<gi.game;
         if (gi.players == 1) {
-            numGames++;
             list.push_back(gi.game);
         }
     }
@@ -87,9 +82,12 @@ int GamesList::getOpponent(string name,int sid) {
     gameInfo gi;
     for (it = games.begin(); it != games.end(); ++it) {
         gi = *it;
-        if (name == gi.game && (gi.player2sock == 0)) {
+        if ((name == gi.game) && (gi.players == 1)) {
             //found the game in the lis, return opponents socket id
             gi.player2sock = sid;
+
+            gi.players = 2;
+            cout<<"game: "<< gi.game << "updated jjjj "<<gi.players<<endl;
             return gi.player1sock;
 
         }
