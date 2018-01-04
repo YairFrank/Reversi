@@ -69,7 +69,7 @@ void GamesList::getAvailableGames(vector<string> &list) {
     gameInfo gi;
     for (it = games.begin(); it != games.end(); ++it) {
         gi = *it;
-        if (gi.players == 1) {
+        if (it->players == 1) {
             list.push_back(gi.game);
         }
     }
@@ -84,11 +84,10 @@ int GamesList::getOpponent(string name,int sid) {
         gi = *it;
         if ((name == gi.game) && (gi.players == 1)) {
             //found the game in the lis, return opponents socket id
-            gi.player2sock = sid;
+            it->player2sock = sid;
+            it->players = 2;
+            return it->player1sock;
 
-            gi.players = 2;
-            cout<<"game: "<< gi.game << "updated jjjj "<<gi.players<<endl;
-            return gi.player1sock;
 
         }
     }

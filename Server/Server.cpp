@@ -16,7 +16,7 @@
 using namespace std;
 #define MAX_CONNECTED_CLIENTS 10
 #define MAX_COMMAND_LEN 50
-typedef struct threadInfo {long serverSock; vector<pthread_t> pthreads;} threadInfo;
+typedef struct threadInfo {long serverSock; vector<pthread_t>* pthreads;} threadInfo;
 
 Server::Server(int port): port(port), serverSocket(0), clientConnectingThread(0) {
     cout << "Server" << endl;
@@ -45,7 +45,7 @@ void Server::start() {
     //start listening to incoming connections
     listen(serverSocket, MAX_CONNECTED_CLIENTS);
     ti->serverSock = serverSocket;
-    ti->pthreads = threads;
+    ti->pthreads = &threads;
     int rc = pthread_create(&clientConnectingThread, NULL, &getClients, (void*)ti);
     if (rc) {
         cout << "Error: unable to create thread, " << rc << endl;
@@ -59,9 +59,9 @@ void* Server::getClients(void* tinfo) {
 
     threadInfo* ti = (threadInfo*)tinfo;
     long serverSid = ti->serverSock;
-    vector<pthread_t > threads = ti->pthreads;
+    //vector<pthread_t > threads = ti->pthreads;
 
-    pthread_t thread;
+    //pthread_t thread;
 
     int i = 0;
 
@@ -75,8 +75,9 @@ void* Server::getClients(void* tinfo) {
         if (playerSocket == -1) {
             throw "Error on accept";
         }
-        threads.push_back(thread);
-        int rc = pthread_create(&threads[i], NULL, &handleClient, (void *) playerSocket);
+        pthread_t thread;
+        ti->pthreads->push_back(thread);
+        int rc = pthread_create(&thread, NULL, &handleClient, (void *) playerSocket);
         if (rc) {
             cout << "Error: unable to create thread, " << rc << endl;
             exit(-1);
@@ -124,13 +125,13 @@ void Server::stop() {
     vector<int> sockets;
     vector<int>::iterator itn;
     int clientsocket;
+    int i = 0;
 
-    pthread_cancel(clientConnectingThread);
+
 
     //close all client-handling threads
     for (it = threads.begin(); it != threads.end(); ++it) {
-        pt = *it;
-        pthread_cancel(pt);
+        pthread_cancel(*it);
     }
 
     cout << "Server stopped" << endl;
@@ -142,6 +143,7 @@ void Server::stop() {
         clientsocket = *itn;
         close(clientsocket);
     }
+    pthread_cancel(clientConnectingThread);
     close(serverSocket);
 }
 

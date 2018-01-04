@@ -21,14 +21,14 @@ RemoteGame::RemoteGame() : b(Board()), gl(GameLogic()) {
 
 void RemoteGame::initialize() {
 
-    bool first = true, played = false,valid;
+    bool valid;
     char char_array[MAXLEN];
     string input, command;
     int n, numCommand = 0, status;
 
     RemotePlayer *p;
     string IP;
-    int port, flag = 0;  //for getLine func correctness;
+    int port;
     ifstream inFile;
     inFile.open("infoclient.txt");
     inFile >> IP;
@@ -36,7 +36,7 @@ void RemoteGame::initialize() {
     inFile.close();
     const char *ip = IP.c_str();
     Client client(ip, port);
-
+    cin.ignore();
     while (true) {
         cl = client;
         try {
@@ -51,10 +51,6 @@ void RemoteGame::initialize() {
              "to see existing games, please type - list_games" << endl << endl <<
              "to join an existing game from the list, please type - join name_of_game_to_join" << endl;
 
-        if (first || played) {
-            cin.ignore();
-            first = false;
-        }
 
         //get command from client
         cin.clear();
@@ -71,15 +67,9 @@ void RemoteGame::initialize() {
         while(!checkValid(command)) {
             cin.clear();
             getline(cin, input);
-            cout<<"input: "<<input<<endl;
-            iss.str(input);
-            string command;
+            istringstream iss(input);
+            //string command;
             iss >> command;
-            cout<<"command: "<<command<<endl;
-            valid = checkValid(command);
-            if (valid) {
-                break;
-            }
         }
 
         //write command to server
@@ -110,8 +100,6 @@ void RemoteGame::initialize() {
 
         } else if (command == "join"){
 
-            //necessary for cleaing console before reading next command from client
-            played = true;
             //start playing a previously initilized game
             RemoteGame::play();
         } else {
@@ -124,7 +112,7 @@ void RemoteGame::initialize() {
 
 bool RemoteGame::checkValid(string command) {
     if ((command != "start" && command != "join" && command != "list_games")) {
-        cout << "Error, please enter valid option: "<<command << endl;
+        cout << "Error, please enter valid option:" << endl;
         return false;
     }
     return true;
