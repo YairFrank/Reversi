@@ -39,7 +39,9 @@ void Server::start() {
     serverAddress.sin_family = AF_INET;
     serverAddress.sin_addr.s_addr = INADDR_ANY;
     serverAddress.sin_port = htons(port);
+
     if (bind(serverSocket, (struct sockaddr *) &serverAddress, sizeof(serverAddress)) == -1) {
+
         throw runtime_error("Error on binding");
     }
     //start listening to incoming connections
@@ -57,11 +59,8 @@ void Server::start() {
 
 void* Server::getClients(void* tinfo) {
 
-    threadInfo* ti = (threadInfo*)tinfo;
+    threadInfo* ti = (threadInfo*) tinfo;
     long serverSid = ti->serverSock;
-    //vector<pthread_t > threads = ti->pthreads;
-
-    //pthread_t thread;
 
     int i = 0;
 
@@ -72,11 +71,13 @@ void* Server::getClients(void* tinfo) {
     while (true) {
         //accept a players connection
         int playerSocket = accept(serverSid, (struct sockaddr *) &playerAddress, &playerAddressLen);
+
         if (playerSocket == -1) {
             throw "Error on accept";
         }
         pthread_t thread;
         ti->pthreads->push_back(thread);
+
         int rc = pthread_create(&thread, NULL, &handleClient, (void *) playerSocket);
         if (rc) {
             cout << "Error: unable to create thread, " << rc << endl;
@@ -127,24 +128,27 @@ void Server::stop() {
     int clientsocket;
     int i = 0;
 
-
-
-    //close all client-handling threads
-    for (it = threads.begin(); it != threads.end(); ++it) {
-        pthread_cancel(*it);
-    }
-
-    cout << "Server stopped" << endl;
-    //close all clients sockets:
-
     GamesList* gl = GamesList::getGamesList();
     gl->getAllSockets(sockets);
     for (itn = sockets.begin(); itn != sockets.end(); ++itn) {
         clientsocket = *itn;
         close(clientsocket);
     }
+
+    //close all client-handling threads
+    for (it = threads.begin(); it != threads.end(); ++it) {
+        //cout<<"canceling threads"<<endl;
+        pthread_cancel(*it);
+    }
+
+
+    //close all clients sockets:
+
+
     pthread_cancel(clientConnectingThread);
+
     close(serverSocket);
+    cout << "Server stopped" << endl;
 }
 
 
